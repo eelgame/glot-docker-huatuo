@@ -17,6 +17,7 @@ data Language
     | Cpp
     | Crystal
     | Csharp
+    | Huatuo
     | D
     | Elixir
     | Elm
@@ -72,6 +73,7 @@ instance Show Language where
     show Cpp = "cpp"
     show Crystal = "crystal"
     show Csharp = "csharp"
+    show Huatuo = "huatuo"
     show D = "d"
     show Elixir = "elixir"
     show Elm = "elm"
@@ -115,6 +117,7 @@ toLanguage "cpp" = Cpp
 toLanguage "c" = C
 toLanguage "crystal" = Crystal
 toLanguage "csharp" = Csharp
+toLanguage "huatuo" = Huatuo
 toLanguage "d" = D
 toLanguage "elixir" = Elixir
 toLanguage "elm" = Elm
@@ -197,6 +200,7 @@ languageFileExt Coffeescript = "coffee"
 languageFileExt Cpp = "cpp"
 languageFileExt Crystal = "cr"
 languageFileExt Csharp = "cs"
+languageFileExt Huatuo = "cs"
 languageFileExt D = "d"
 languageFileExt Elixir = "ex"
 languageFileExt Elm = "elm"
@@ -243,6 +247,7 @@ languageLogo Coffeescript = img_coffeescript_svg
 languageLogo Cpp = img_cpp_svg
 languageLogo Crystal = img_crystal_svg
 languageLogo Csharp = img_csharp_svg
+languageLogo Huatuo = img_csharp_svg
 languageLogo D = img_d_svg
 languageLogo Elixir = img_elixir_svg
 languageLogo Elm = img_elm_svg
@@ -283,6 +288,7 @@ languageLogoPng Coffeescript = img_coffeescript_svg_png
 languageLogoPng Cpp = img_cpp_svg_png
 languageLogoPng Crystal = img_crystal_svg_png
 languageLogoPng Csharp = img_csharp_svg_png
+languageLogoPng Huatuo = img_csharp_svg_png
 languageLogoPng D = img_d_svg_png
 languageLogoPng Elixir = img_elixir_svg_png
 languageLogoPng Elm = img_elm_svg_png
@@ -323,6 +329,7 @@ languageAceMode Coffeescript = "ace/mode/coffee"
 languageAceMode Cpp = "ace/mode/c_cpp"
 languageAceMode Crystal = "ace/mode/crystal"
 languageAceMode Csharp = "ace/mode/csharp"
+languageAceMode Huatuo = "ace/mode/csharp"
 languageAceMode D = "ace/mode/d"
 languageAceMode Elixir = "ace/mode/elixir"
 languageAceMode Elm = "ace/mode/elm"
@@ -363,6 +370,7 @@ languageName Coffeescript = "Coffeescript"
 languageName Cpp = "C++"
 languageName Crystal = "Crystal"
 languageName Csharp = "C#"
+languageName Huatuo = "huatuo"
 languageName D = "D"
 languageName Elixir = "Elixir"
 languageName Elm = "Elm"
@@ -407,6 +415,7 @@ languageDockerImage Coffeescript = "glot/coffeescript:latest"
 languageDockerImage Cpp = "glot/clang:latest"
 languageDockerImage Crystal = "glot/crystal:latest"
 languageDockerImage Csharp = "glot/csharp:latest"
+languageDockerImage Huatuo = "glot/huatuo:latest"
 languageDockerImage D = "glot/dlang:latest"
 languageDockerImage Elixir = "glot/elixir:latest"
 languageDockerImage Elm = "glot/elm:latest"
@@ -447,6 +456,7 @@ languageRunCmdExample Coffeescript = "coffee main.coffee"
 languageRunCmdExample Cpp = "clang++ main.cpp && ./a.out"
 languageRunCmdExample Crystal = "crystal run main.cr"
 languageRunCmdExample Csharp = "mcs -out:a.exe main.cs && mono a.exe"
+languageRunCmdExample Huatuo = "mcs -out:a.exe main.cs && mono a.exe"
 languageRunCmdExample D = "dmd -ofa.out main.d && ./a.out"
 languageRunCmdExample Elixir = "elixirc main.ex"
 languageRunCmdExample Elm = "elm make --output a.js Main.elm && elm-runner a.js"
@@ -516,7 +526,7 @@ int main() {
     cout << "Hello World!";
     return 0;
 }|]
-languageDefaultContent Csharp = [multiline|using System;
+languageDefaultContent Huatuo = languageDefaultContent Csharp = [multiline|using System;
 using System.Collections.Generic;
 using System.Linq;
 
