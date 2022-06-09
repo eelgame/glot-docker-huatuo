@@ -1,5 +1,5 @@
 $newline never
-^{navbarWidget Nothing}
+^{navbarWidget}
 
 <div class="container content-container">
   <div class="row">
@@ -7,5 +7,5 @@ $newline never
       <div class="snippet-header">
         <div class="snippet-header-title">
           <h2 id="snippet-title" contenteditable>#{Snippet.title snippet}
-      ^{editorWidget True language snippet files Nothing Nothing}
-      ^{footerWidget False True (Language.isRunnable language) False Nothing Nothing}
+      ^{editorWidget True lang snippet files Nothing Nothing}
+      ^{footerWidget True (languageIsRunnable lang) False Nothing Nothing}

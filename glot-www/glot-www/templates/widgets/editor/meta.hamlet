@@ -7,8 +7,8 @@ $newline never
   <tbody>
     <tr>
       <td>Language
-      <td>#{Language.name language}
-    $maybe runConfig <- Language.runConfig language
+      <td>#{languageName lang}
+    $if languageIsRunnable lang
       <tr>
         <td>Language Version
         <td>
@@ -17,21 +17,21 @@ $newline never
           $else
             <select id="lang-version">
               $forall version <- versions
-                <option value="#{version}" :savedVersion == version:selected>#{version}
+                <option value="#{version}" :currentVersion == version:selected>#{version}
       <tr>
         <td>Run Command
-        $if null savedRunCommand
+        $if null runCommand
           <td>
             <div class="input-group input-group-sm cmd-group">
               <span class="input-group-addon">
                 <input type="checkbox" id="cmd-checkbox">
-              <input type="text" class="form-control" id="cmd-input" value="#{Language.runCommand runConfig}" disabled>
+              <input type="text" class="form-control" id="cmd-input" value="#{languageRunCmdExample lang}" disabled>
         $else
           <td>
             <div class="input-group input-group-sm cmd-group">
               <span class="input-group-addon">
                 <input type="checkbox" id="cmd-checkbox" checked>
-              <input type="text" class="form-control" id="cmd-input" value="#{savedRunCommand}">
+              <input type="text" class="form-control" id="cmd-input" value="#{runCommand}">
 
 $if not $ isComposing snippet
   <table class="meta-table metadata table">

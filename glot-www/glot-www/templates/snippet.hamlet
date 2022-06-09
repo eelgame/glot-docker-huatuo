@@ -1,5 +1,5 @@
 $newline never
-^{navbarWidget (Just (Language.identifier language))}
+^{navbarWidget}
 
 <div class="container content-container">
   <div class="row">
@@ -10,8 +10,8 @@ $newline never
             <h2 id="snippet-title" contenteditable>#{Snippet.title snippet}
           $else
             <h2 id="snippet-title">#{Snippet.title snippet}
-      ^{editorWidget userIsSnippetOwner language snippet files profile runParams}
-      ^{footerWidget False False (Language.isRunnable language) userIsSnippetOwner runParams runResult}
+      ^{editorWidget userIsSnippetOwner lang snippet files profile runParams}
+      ^{footerWidget False (languageIsRunnable lang) userIsSnippetOwner runParams runResult}
       <div class="hide">
         <div id="share-content">
           ^{shareWidget slug}

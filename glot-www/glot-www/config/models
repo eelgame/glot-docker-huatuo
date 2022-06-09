@@ -55,7 +55,7 @@ RunResult
 
 CodeSnippet
     slug Text
-    language Language.Id
+    language Text
     title Text
     public Bool
     userId UserId Maybe default=NULL

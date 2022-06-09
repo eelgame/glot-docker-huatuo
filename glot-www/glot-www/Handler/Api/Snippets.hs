@@ -9,7 +9,7 @@ import qualified GHC.Generics as GHC
 import qualified Handler.Snippets as SnippetsHandler
 import qualified Handler.Snippet as SnippetHandler
 import qualified Handler.UserSnippets as UserSnippetsHandler
-import qualified Glot.Pagination as Pagination
+import qualified Model.Pagination as Pagination
 import qualified Util.Persistent as Persistent
 import qualified Util.Handler as HandlerUtils
 import qualified Data.Time.Format.ISO8601 as ISO8601
@@ -17,7 +17,6 @@ import qualified Text.Read as Read
 import qualified Data.Text.Encoding as Encoding
 import qualified Data.Text.Encoding.Error as Encoding.Error
 import qualified Glot.Snippet as Snippet
-import qualified Glot.Language as Language
 import qualified Network.Wai as Wai
 import qualified Data.List.NonEmpty as NonEmpty
 
@@ -27,7 +26,7 @@ import Data.Function ((&))
 data ApiListSnippet = ApiListSnippet
     { id :: Text
     , url :: Text
-    , language :: Language.Id
+    , language :: Text
     , title :: Text
     , public :: Bool
     , owner :: Text
@@ -43,7 +42,7 @@ instance Aeson.ToJSON ApiListSnippet
 data ApiSnippet = ApiSnippet
     { id :: Text
     , url :: Text
-    , language :: Language.Id
+    , language :: Text
     , title :: Text
     , public :: Bool
     , owner :: Text

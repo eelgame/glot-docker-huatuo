@@ -8,10 +8,8 @@ window.Editor = (function() {
         var editor = ace.edit(id);
         editor.setTheme(theme);
         editor.setKeyboardHandler(keybindings);
-        editor.getSession().setMode(#{toJSON $ Language.mode $ Language.editorConfig language});
+        editor.getSession().setMode(#{toJSON $ languageAceMode lang});
         editor.setOptions({
-            useSoftTabs: #{Julius.rawJS useSoftTabs},
-            tabSize: #{toJSON tabSize},
             minLines: lineCount,
             maxLines: lineCount,
         });
@@ -98,6 +96,10 @@ window.Editor = (function() {
     }
 
     function setActiveTab(elem) {
+        // Ensure only selected tab is contentediable
+        $(".filename").removeAttr("contenteditable");
+        elem.find(".filename").attr("contenteditable", true);
+
         // Ensure selected tab is active and visible
         $(".editor-widget li.active").removeClass("active");
         elem.removeClass("hide");
@@ -185,22 +187,6 @@ window.Editor = (function() {
         return ace.edit(editorId);
     }
 
-    function onRunCodeKeyComboPressed(callback) {
-        // Trigger callback when the keys cmd-enter (mac) or ctrl-enter (non-mac) is pressed
-        $(document).on('keydown', function (e) {
-            var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-            var enterKeyPressed = e.which === 13;
-            var metaKeyPressed = e.metaKey;
-            var ctrlKeyPressed = e.ctrlKey
-            var shouldRunCode = enterKeyPressed && ((isMac && metaKeyPressed) || (!isMac && ctrlKeyPressed))
-
-            if (shouldRunCode) {
-                e.preventDefault();
-                callback();
-            }
-        });
-    }
-
     return {
         initEditor: initEditor,
         resetEditor: resetEditor,
@@ -217,7 +203,6 @@ window.Editor = (function() {
         getFiles: getFiles,
         clean: clean,
         isClean: isClean,
-        onRunCodeKeyComboPressed: onRunCodeKeyComboPressed,
     };
 
 })();
@@ -308,16 +293,6 @@ window.Fork = (function() {
     // Prevent default on # href's
     $(document).on("click", '.nav-tabs a[href="#"]', function(e) {
         e.preventDefault();
-    });
-
-    // Show filename prompt when clicking on the active tab
-    $(document).on("click", "li.active .filename", function(e) {
-        var elem = $(e.target);
-        var filename = prompt("Enter a new filename", elem.text())
-
-        if (filename) {
-            elem.text(filename);
-        }
     });
 
     if (Fork.hasFiles()) {

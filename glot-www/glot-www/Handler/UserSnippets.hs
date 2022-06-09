@@ -3,18 +3,16 @@ module Handler.UserSnippets where
 import Import
 import Util.Handler (pageNo, titleConcat)
 import Widget.Pagination (paginationWidget)
-import qualified Glot.Pagination as Pagination
+import qualified Model.Pagination as Pagination
 import qualified Util.Persistent as Persistent
 import qualified Util.Snippet as Snippet
 import qualified Util.Multiline as Multiline
 import qualified Data.Time.Format.ISO8601 as ISO8601
 import qualified Util.Handler as Handler
-import qualified Glot.Language as Language
 
 
 getUserSnippetsR :: Text -> Handler Html
 getUserSnippetsR username = do
-    App{..} <- getYesod
     Entity _ profile <- runDB $ getBy404 $ UniqueUsername username
     maybeLoggedInUserId <- maybeAuthId
     currentPage <- pageNo <$> lookupGetParam "page"

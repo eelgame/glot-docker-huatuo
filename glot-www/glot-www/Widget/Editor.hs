@@ -6,55 +6,41 @@ module Widget.Editor (
 import Import
 import Util.Snippet (formatRunParams)
 import Widget.CarbonAds (carbonAdsWidget)
-import qualified Text.Julius as Julius
-import qualified Settings.Environment
+import Settings.Environment (disableAds)
 import qualified Util.Snippet as Snippet
 import qualified Data.Text.Encoding as Encoding
 import qualified Data.Text.Encoding.Error as Encoding.Error
 import qualified Data.Time.Format.ISO8601 as ISO8601
-import qualified Glot.Language as Language
 
 
-
-editorWidget :: Bool -> Language.Language -> CodeSnippet -> [CodeFile] -> Maybe (Entity Profile) -> Maybe (Entity RunParams) -> Widget
-editorWidget userIsSnippetOwner language snippet files profile runParams =
+editorWidget :: Bool -> Language -> CodeSnippet -> [CodeFile] -> Maybe (Entity Profile) -> Maybe (Entity RunParams) -> Widget
+editorWidget userIsSnippetOwner lang snippet files profile runParams =
     let
         fileCount =
             length files
-
-        editorConfig =
-            Language.editorConfig language
-
-        useSoftTabs :: Bool
-        useSoftTabs =
-            Language.useSoftTabs editorConfig
-
-        tabSize :: Int
-        tabSize =
-            fromIntegral (Language.softTabSize editorConfig)
     in do
     addScript $ StaticR lib_ace_ace_js
     $(widgetFile "widgets/editor")
 
-metaWidget :: Bool -> Language.Language -> CodeSnippet -> Maybe (Entity Profile) -> Maybe (Entity RunParams) -> Widget
-metaWidget userIsSnippetOwner language snippet mProfile runParams = do
+metaWidget :: Bool -> CodeSnippet -> Maybe (Entity Profile) -> Maybe (Entity RunParams) -> Widget
+metaWidget userIsSnippetOwner snippet mProfile runParams = do
     let versions = ["latest"] :: [Text]
-    let (_, savedVersion, savedRunCommand) = formatRunParams runParams
     addScript $ StaticR js_date_js
     $(widgetFile "widgets/editor/meta")
+    where
+        (_, currentVersion, runCommand) = formatRunParams runParams
+        lang = toLanguage $ codeSnippetLanguage snippet
 
 settingsWidget :: Widget
 settingsWidget = $(widgetFile "widgets/editor/settings")
 
--- TODO: Fix bool blindness
-footerWidget :: Bool -> Bool -> Bool -> Bool -> Maybe (Entity RunParams) -> Maybe (Entity RunResult) -> Widget
-footerWidget isEmbeded isComposingSnippet isRunnable isOwner runParams runResult =
+footerWidget :: Bool -> Bool -> Bool -> Maybe (Entity RunParams) -> Maybe (Entity RunResult) -> Widget
+footerWidget isComposingSnippet isRunnable isOwner runParams runResult =
     let
         (stdinData, _, _) = formatRunParams runParams
         (stdoutRes, stderrRes, errorRes, hasRunResult) = formatRunResult runResult
     in do
-        disableAds <- liftIO $ Settings.Environment.disableAds
-        let hideAds = isEmbeded || disableAds
+        showAds <- liftIO $ not <$> disableAds
         $(widgetFile "widgets/editor/footer")
 
 formatRunResult :: Maybe (Entity RunResult) -> (Text, Text, Text, Bool)
@@ -89,22 +75,20 @@ getFileContent maybeFile =
         Nothing ->
             ""
 
-getFilename :: Language.Language -> Maybe CodeFile -> Int -> Text
+getFilename :: Language -> Maybe CodeFile -> Int -> Text
 getFilename _ (Just file) _ = codeFileName file
-getFilename language Nothing 2 = addExt language "dio"
-getFilename language Nothing 3 = addExt language "tria"
-getFilename language Nothing 4 = addExt language "tessera"
-getFilename language Nothing 5 = addExt language "pente"
-getFilename language Nothing 6 = addExt language "eksi"
-getFilename language Nothing 7 = addExt language "efta"
-getFilename language Nothing 8 = addExt language "okto"
-getFilename language Nothing 9 = addExt language "enia"
-getFilename language Nothing _ = addExt language "infinitum"
+getFilename lang Nothing 2 = addExt lang "dio"
+getFilename lang Nothing 3 = addExt lang "tria"
+getFilename lang Nothing 4 = addExt lang "tessera"
+getFilename lang Nothing 5 = addExt lang "pente"
+getFilename lang Nothing 6 = addExt lang "eksi"
+getFilename lang Nothing 7 = addExt lang "efta"
+getFilename lang Nothing 8 = addExt lang "okto"
+getFilename lang Nothing 9 = addExt lang "enia"
+getFilename lang Nothing _ = addExt lang "infinitum"
 
-addExt :: Language.Language -> Text -> Text
-addExt Language.Language{..} filename =
-    concat [ filename, "." , fileExtension ]
-
+addExt :: Language -> Text -> Text
+addExt lang name = concat [name, ".", languageFileExt lang]
 
 isComposing :: CodeSnippet -> Bool
 isComposing snippet =

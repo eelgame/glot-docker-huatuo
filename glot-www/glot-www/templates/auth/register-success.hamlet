@@ -1,5 +1,5 @@
 $newline never
-^{navbarWidget Nothing}
+^{navbarWidget}
 
 <div class="container">
   <div class="row">

@@ -12,8 +12,6 @@ import qualified Data.List.NonEmpty as NonEmpty
 import qualified Data.Text.Encoding as Encoding
 import qualified Data.Text.Encoding.Error as Encoding.Error
 import qualified Settings.Environment as Environment
-import qualified Glot.Language as Language
-import qualified Util.Handler as Handler
 
 
 data RunPayload = RunPayload
@@ -26,12 +24,10 @@ data RunPayload = RunPayload
 instance Aeson.FromJSON RunPayload
 
 
-
-postRunR :: Language.Id -> Handler Value
-postRunR langId = do
-    maybeLanguage <- Handler.lookupLanguage langId
-    language <- Handler.fromMaybeOrJsonError maybeLanguage $ Handler.JsonErrorResponse status404 "Language is not supported"
-    runConfig <- Handler.fromMaybeOrJsonError (Language.runConfig language) $ Handler.JsonErrorResponse status400 "Language is not runnable"
+postRunR :: Language -> Handler Value
+postRunR lang = do
+    when (not $ languageIsRunnable lang) $
+        sendResponseStatus status400 (Aeson.object ["message" .= Aeson.String "Language is not runnable"])
     req <- reqWaiRequest <$> getRequest
     body <- liftIO $ Wai.strictRequestBody req
     dockerRunConfig <- liftIO lookupDockerRunConfig
@@ -40,7 +36,7 @@ postRunR langId = do
             sendResponseStatus status400 $ object ["message" .= ("Invalid request body: " <> err)]
 
         Right payload -> do
-            result <- liftIO $ DockerRun.run dockerRunConfig (toRunRequest langId runConfig payload)
+            result <- liftIO $ DockerRun.run dockerRunConfig (toRunRequest lang (languageDockerImage lang) payload)
             case result of
                 Left err -> do
                     print (DockerRun.debugError err)
@@ -77,10 +73,10 @@ formatRunError err =
             Aeson.object ["message" .= (Aeson.String message)]
 
 
-toRunRequest :: Language.Id -> Language.RunConfig -> RunPayload -> DockerRun.RunRequest
-toRunRequest language Language.RunConfig{..} RunPayload{..} =
+toRunRequest :: Language -> Text -> RunPayload -> DockerRun.RunRequest
+toRunRequest language dockerImage RunPayload{..} =
     DockerRun.RunRequest
-        { image = containerImage
+        { image = dockerImage
         , payload = DockerRun.RunRequestPayload{..}
         }
 

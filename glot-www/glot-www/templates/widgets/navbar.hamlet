@@ -15,12 +15,6 @@ $newline never
       <ul class="nav navbar-nav">
         <li :currentPage == ComposeLanguagesPage:.active>
           <a href="@{ComposeLanguagesR}"><i class="fa fa-edit"></i> New
-        $maybe langId <- maybeLangId
-          <li :currentPage == LearnPage:.active>
-            <a href="@{LearnLanguageR langId}"><i class="fa fa-graduation-cap"></i> Learn
-        $nothing
-          <li :currentPage == LearnPage:.active>
-            <a href="@{LearnR}"><i class="fa fa-graduation-cap"></i> Learn
         <li :currentPage == SnippetsPage:.active>
           <a href="@{SnippetsR}"><i class="fa fa-list"></i> Snippets
         $maybe profile <- mProfile
@@ -37,7 +31,7 @@ $newline never
             <li>
               <a href="@{MetaApiDocsR}"><i class="fa fa-exchange"></i> API Docs
             <li>
-              <a href="https://github.com/glotcode/glot"><i class="fa fa-github"></i> Source Code
+              <a href="https://github.com/prasmussen/glot"><i class="fa fa-github"></i> Source Code
 
       <ul class="nav navbar-nav navbar-right">
         $maybe profile <- mProfile

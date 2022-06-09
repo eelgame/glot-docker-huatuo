@@ -8,10 +8,6 @@ module Util.Handler (
     apiRequestHeaders,
     setCanonicalUrl,
     lookupApiUser,
-    lookupLanguage,
-    getLanguage,
-    JsonErrorResponse(..),
-    fromMaybeOrJsonError,
 ) where
 
 import Import
@@ -20,43 +16,6 @@ import Text.Blaze (toMarkup, Markup)
 import Data.CaseInsensitive (mk)
 import qualified Network.Wai as Wai
 import qualified Data.Text as Text
-import qualified Glot.Language as Language
-import qualified Network.HTTP.Types as Http
-import qualified Data.Aeson as Aeson
-
-
-lookupLanguage :: Language.Id -> Handler (Maybe Language.Language)
-lookupLanguage langId = do
-    App{..} <- getYesod
-    pure (Language.find languages langId)
-
-
-getLanguage :: Language.Id -> Handler Language.Language
-getLanguage langId = do
-    maybeLanguage <- lookupLanguage langId
-    case maybeLanguage of
-        Just language ->
-            pure language
-
-        Nothing -> do
-            html <- defaultLayout [whamlet|Language #{Language.idToText langId} is not supported|]
-            sendResponseStatus status500 html
-
-
-data JsonErrorResponse = JsonErrorResponse
-    { status :: Http.Status
-    , message :: Text
-    }
-
-fromMaybeOrJsonError :: Maybe a -> JsonErrorResponse -> Handler a
-fromMaybeOrJsonError maybeValue JsonErrorResponse{..} =
-    case maybeValue of
-        Just value ->
-            pure value
-
-        Nothing ->
-            sendResponseStatus status (Aeson.object ["message" .= Aeson.String message])
-
 
 urlDecode' :: Text -> Text
 urlDecode' x = decodeUtf8 $ urlDecode True $ encodeUtf8 x

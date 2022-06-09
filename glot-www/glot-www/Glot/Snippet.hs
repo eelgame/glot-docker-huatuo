@@ -6,8 +6,6 @@ module Glot.Snippet
     , FilePayload(..)
     , toCodeFile
     , newSlug
-    , titleFromText
-    , fileContentFromText
     ) where
 
 import Import
@@ -18,13 +16,12 @@ import qualified Data.Time.Clock as Clock
 import qualified Numeric
 import qualified Data.List.NonEmpty as NonEmpty
 import qualified Prelude
-import qualified Glot.Language as Language
 import Data.Function ((&))
 import Prelude ((!!))
 
 
 data SnippetPayload = SnippetPayload
-    { language :: Language.Id
+    { language :: Language
     , title :: Title
     , public :: Bool
     , files :: NonEmpty.NonEmpty FilePayload
@@ -37,7 +34,7 @@ toCodeSnippet :: Text -> UTCTime -> UTCTime -> Maybe UserId -> SnippetPayload ->
 toCodeSnippet slug createdAt modifiedAt maybeUserId SnippetPayload{..} =
     CodeSnippet
         { codeSnippetSlug = slug
-        , codeSnippetLanguage = language
+        , codeSnippetLanguage = pack (show language)
         , codeSnippetTitle = titleToText title
         , codeSnippetPublic = public
         , codeSnippetUserId = maybeUserId

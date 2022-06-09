@@ -4,7 +4,7 @@ $newline never
   <div class="panel panel-default">
     <div class="panel-heading">
       $if isRunnable
-        <button class="btn btn-primary item run" title="cmd+enter / ctrl+enter"><i class="fa fa-play"></i> Run
+        <button class="btn btn-primary item run"><i class="fa fa-play"></i> Run
         <div class="btn-group item" data-toggle="buttons">
           $if hasRunResult
             <label class="btn btn-primary show-input-label"><input type="radio" name="options" class="show-input" autocomplete="off"> Input
@@ -83,7 +83,7 @@ $newline never
               <span class="output-label">Error
               <pre class="body">#{errorRes}
             <a href="#" class="show-full-height hide"><i class="fa fa-expand"></i>
-        $if not hideAds
+        $if showAds
           <div class="col-sm-3 footer-right">
             <ul class="list-group cool-stuff">
               <li class="list-group-item cool-stuff">
@@ -92,7 +92,7 @@ $newline never
                 <div class="body">
                   ^{carbonAdsWidget}
     $else
-      $if not hideAds
+      $if showAds
         <ul class="list-group cool-stuff">
           <li class="list-group-item cool-stuff">
             <span class="output-label">

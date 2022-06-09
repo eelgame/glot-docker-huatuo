@@ -24,7 +24,6 @@ library
                      Handler.Common
                      Handler.Home
                      Handler.Compose
-                     Handler.Learn
                      Handler.Snippet
                      Handler.Snippets
                      Handler.UserSnippets
@@ -34,6 +33,9 @@ library
                      Handler.Meta
                      Handler.Api.Snippets
                      Handler.Api.Run
+                     Model.Language
+                     Model.Pagination
+                     Model.Snippet
                      Util.Shakespare
                      Util.Handler
                      Util.Multiline
@@ -44,15 +46,14 @@ library
                      Util.Alert
                      Util.Persistent
                      Widget.Editor
+                     Widget.RunResult
                      Widget.Languages
                      Widget.Pagination
                      Widget.Share
                      Widget.CarbonAds
                      Yesod.Auth.Simple
-                     Glot.Pagination
                      Glot.Snippet
                      Glot.DockerRun
-                     Glot.Language
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -126,8 +127,6 @@ library
                  , req
                  , http-client
                  , modern-uri
-                 , dhall
-                 , either
 
 executable         glot
     if flag(library-only)
@@ -136,16 +135,5 @@ executable         glot
     main-is:           main.hs
     hs-source-dirs:    app
     build-depends:     base, glot
-
-    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
-
-
-executable         glot-image-tester
-    if flag(library-only)
-        Buildable: False
-
-    main-is:           image-tester.hs
-    hs-source-dirs:    app
-    build-depends:     base, process, text, bytestring, aeson, glot
 
     ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N

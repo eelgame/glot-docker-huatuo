@@ -1,5 +1,5 @@
 $newline never
-^{navbarWidget Nothing}
+^{navbarWidget}
 
 <div class="container">
   <div class="row">
@@ -20,12 +20,9 @@ $newline never
             $with (snippet, maybeProfile) <- (entrySnippet entry, entryProfile entry)
               <tr>
                 <td>
-                  $maybe language <- Language.find languages (codeSnippetLanguage snippet)
-                    <img class="logo" src=@{StaticR $ Language.svgLogoRoute language} alt="#{Language.name language} logo">
-                    <a class="language" href="@?{(SnippetsR, [("language", Language.idToText $ codeSnippetLanguage snippet)])}">#{Language.name language}
-
-                  $nothing
-                    #{Language.idToText $ codeSnippetLanguage snippet}
+                  $with language <- toLanguage (codeSnippetLanguage snippet)
+                    <img class="logo" src=@{StaticR $ languageLogo language} alt="#{languageName language} logo">
+                    <a class="language" href="@?{(SnippetsR, [("language", codeSnippetLanguage snippet)])}">#{languageName language}
                 <td>
                   <a href="@{SnippetR $ codeSnippetSlug snippet}" title="#{Snippet.title snippet}">#{Snippet.title snippet}
                 <td data-iso-date="#{ISO8601.iso8601Show $ codeSnippetCreated snippet}">
@@ -36,7 +33,7 @@ $newline never
 
                   $nothing
                     <span>Anonymous
-      $if Pagination.paginationRequired pagination
+      $if paginationRequired pagination
         $maybe languageParam <- maybeLanguageParam
           ^{paginationWidget SnippetsR pagination currentPage [("language", languageParam)]}
 

@@ -3,19 +3,17 @@ module Handler.Snippets where
 import Import
 import Util.Handler (pageNo, title)
 import Widget.Pagination (paginationWidget)
-import qualified Glot.Pagination as Pagination
+import qualified Model.Pagination as Pagination
 import qualified Util.Persistent as Persistent
 import qualified Util.Snippet as Snippet
 import qualified Util.Multiline as Multiline
 import qualified Data.Time.Format.ISO8601 as ISO8601
 import qualified Util.Handler as Handler
-import qualified Glot.Language as Language
 
 
 
 getSnippetsR :: Handler Html
 getSnippetsR = do
-    App{..} <- getYesod
     currentPage <- pageNo <$> lookupGetParam "page"
     maybeLanguageParam <- lookupGetParam "language"
     let snippetsPerPage = 20
@@ -66,8 +64,6 @@ getSnippetsWithCountQuery Persistent.LimitOffset{..} =
                 where
                     code_snippet.public is true
                 and
-                    code_snippet.user_id is not null
-                and
                     code_snippet.language <> 'plaintext'
                 and
                     lower(code_snippet.title) <> 'untitled'
@@ -90,8 +86,6 @@ getSnippetsWithCountQuery Persistent.LimitOffset{..} =
                     code_snippet
                 where
                     code_snippet.public is true
-                and
-                    code_snippet.user_id is not null
                 and
                     code_snippet.language <> 'plaintext'
                 and
@@ -117,8 +111,6 @@ getSnippetsByLanguageWithCountQuery language Persistent.LimitOffset{..} =
                 where
                     code_snippet.public is true
                 and
-                    code_snippet.user_id is not null
-                and
                     code_snippet.language = ?
                 and
                     lower(code_snippet.title) <> 'untitled'
@@ -142,8 +134,6 @@ getSnippetsByLanguageWithCountQuery language Persistent.LimitOffset{..} =
                     code_snippet
                 where
                     code_snippet.public is true
-                and
-                    code_snippet.user_id is not null
                 and
                     code_snippet.language = ?
                 and
@@ -173,5 +163,5 @@ snippetEntryFromEntity codeSnippetEntity profileEntity =
 
 data SnippetEntriesWithPagination = SnippetEntriesWithPagination
     { entries :: [SnippetEntry]
-    , pagination :: Pagination.Pagination
+    , pagination :: Pagination
     }

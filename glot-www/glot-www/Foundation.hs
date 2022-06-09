@@ -26,7 +26,6 @@ import Mail.Hailgun (
     MessageContent(..),
     HailgunErrorResponse(..),
     MessageRecipients(..))
-import qualified Glot.Language as Language
 
 
 -- | The foundation datatype for your application. This can be a good place to
@@ -39,7 +38,6 @@ data App = App
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
     , appHttpManager :: Manager
     , appLogger      :: Logger
-    , languages :: [Language.Language]
     }
 
 instance HasHttpManager App where
@@ -82,11 +80,15 @@ instance Yesod App where
 
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR lib_font_awesome_css_font_awesome_min_css
-            addStylesheet $ StaticR lib_bootstrap_bootstrap_min_css
-            addScript $ StaticR lib_jquery_jquery_min_js
-            addScript $ StaticR lib_bootstrap_bootstrap_min_js
-            addScript $ StaticR js_location_js
-            addScript $ StaticR js_xhr_js
+            $(combineStylesheets 'StaticR [
+                lib_bootstrap_bootstrap_min_css,
+                css_glot_css])
+            $(combineScripts 'StaticR [
+                lib_jquery_jquery_min_js,
+                lib_moment_moment_min_js,
+                lib_bootstrap_bootstrap_min_js,
+                js_location_js,
+                js_xhr_js])
             $(widgetFile "default-layout")
             $(widgetFile "widgets/alert")
             case mAnalytics of
@@ -295,22 +297,20 @@ mkUsername email name = do
             slug
 
 
-navbarWidget :: Maybe Language.Id -> Widget
-navbarWidget maybeLangId = do
+navbarWidget :: Widget
+navbarWidget = do
     auth <- handlerToWidget $ maybeAuth
     mProfile <- case auth of
         Just (Entity userId _) -> do
             Entity _ p <- handlerToWidget $ runDB $ getBy404 $ UniqueProfile userId
             return $ Just p
         Nothing -> return Nothing
-    currentRoute <- getCurrentRoute
-    let currentPage = getCurrentPage mProfile currentRoute
+    currentPage <- getCurrentPage mProfile <$> getCurrentRoute
     $(widgetFile "widgets/navbar")
 
 
 data Page = HomePage |
             ComposeLanguagesPage |
-            LearnPage |
             SnippetsPage |
             MySnippetsPage |
             UserSnippetsPage |
@@ -322,7 +322,6 @@ data Page = HomePage |
 getCurrentPage :: Maybe Profile -> Maybe (Route App) -> Page
 getCurrentPage _ (Just HomeR) = HomePage
 getCurrentPage _ (Just ComposeLanguagesR) = ComposeLanguagesPage
-getCurrentPage _ (Just LearnR) = LearnPage
 getCurrentPage _ (Just SnippetsR) = SnippetsPage
 getCurrentPage _ (Just MetaApiDocsR) = MetaPage
 getCurrentPage _ (Just MetaAboutR) = MetaPage
