@@ -12,6 +12,9 @@ services:
       DOCKER_RUN_ACCESS_TOKEN: donot-worry
       DOCKER_RUN_BASE_URL: "http://run:8088"
       DOCKER_RUN_RESPONSE_TIMEOUT: "60"
+      MAILGUN_DOMAIN: "sandbox137bc5d72b5244e18a3d19561501c810.mailgun.org"
+      MAILGUN_API_KEY: "36889f77c3b292f98f4b251464300c60-523596d9-ef07e900"
+      EMAIL_FROM_ADDRESS: "eelgame@qq.com"
     ports:
       - "3000:3000"
     links:
@@ -55,9 +58,6 @@ services:
       RUN_MAX_EXECUTION_TIME: 15
       RUN_MAX_OUTPUT_SIZE: 100000
       RUST_LOG: debug
-      MAILGUN_DOMAIN: "sandbox137bc5d72b5244e18a3d19561501c810.mailgun.org"
-      MAILGUN_API_KEY: "36889f77c3b292f98f4b251464300c60-523596d9-ef07e900"
-      EMAIL_FROM_ADDRESS: "eelgame@qq.com"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   csharp:
