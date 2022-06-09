@@ -55,6 +55,9 @@ services:
       RUN_MAX_EXECUTION_TIME: 15
       RUN_MAX_OUTPUT_SIZE: 100000
       RUST_LOG: debug
+      MAILGUN_DOMAIN: "sandbox137bc5d72b5244e18a3d19561501c810.mailgun.org"
+      MAILGUN_API_KEY: "36889f77c3b292f98f4b251464300c60-523596d9-ef07e900"
+      EMAIL_FROM_ADDRESS: "eelgame@qq.com"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   csharp:
