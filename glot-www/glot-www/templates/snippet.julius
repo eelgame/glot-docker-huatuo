@@ -15,7 +15,7 @@
 
         var version = Meta.getLanguageVersion();
         
-        var url = '@?{(RunR "/run/huatuo", [("snippet", slug)])}' + "&" + $.param({version: version});
+        var url = '@?{(RunR (toLanguage "huatuo"), [("snippet", slug)])}' + "&" + $.param({version: version});
        
         var payload = {
             files: Editor.getFiles(),
