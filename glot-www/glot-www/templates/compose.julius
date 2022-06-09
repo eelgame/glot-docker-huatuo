@@ -14,7 +14,7 @@
         EditorFooter.showInfo("Running...");
 
         var version = Meta.getLanguageVersion();
-        var url = "huatuo" + "?" + $.param({version: version});
+        var url = "run/huatuo" + "?" + $.param({version: version});
         var payload = {
             files: Editor.getFiles(),
             stdin: EditorFooter.getStdin(),
