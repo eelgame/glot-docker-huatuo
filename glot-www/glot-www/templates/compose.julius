@@ -18,7 +18,7 @@
         var payload = {
             files: Editor.getFiles(),
             stdin: EditorFooter.getStdin(),
-            command: "mcs -out:a.exe main.cs && /Builds/huatuo --glot -a a.exe",
+            command: Meta.getRunCommand(),
         };
 
         XHR.jsonPost(url, payload).done(function(data) {
