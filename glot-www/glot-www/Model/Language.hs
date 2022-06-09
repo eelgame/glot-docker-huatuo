@@ -159,7 +159,7 @@ allLanguages = [
         Cpp,
         Crystal,
         Csharp,
-        Huatuo,
+        -- Huatuo,
         D,
         Elixir,
         Elm,
