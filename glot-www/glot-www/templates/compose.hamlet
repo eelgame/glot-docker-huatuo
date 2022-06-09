@@ -8,4 +8,4 @@ $newline never
         <div class="snippet-header-title">
           <h2 id="snippet-title" contenteditable>#{Snippet.title snippet}
       ^{editorWidget True lang snippet files Nothing Nothing}
-      ^{footerWidget True (languageIsRunnable lang) False Nothing Nothing}
+      ^{footerWidget True (languageIsRunnable lang) False Nothing Nothing lang}

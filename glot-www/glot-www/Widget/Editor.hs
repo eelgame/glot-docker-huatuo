@@ -34,8 +34,8 @@ metaWidget userIsSnippetOwner snippet mProfile runParams = do
 settingsWidget :: Widget
 settingsWidget = $(widgetFile "widgets/editor/settings")
 
-footerWidget :: Bool -> Bool -> Bool -> Maybe (Entity RunParams) -> Maybe (Entity RunResult) -> Widget
-footerWidget isComposingSnippet isRunnable isOwner runParams runResult =
+footerWidget :: Bool -> Bool -> Bool -> Maybe (Entity RunParams) -> Maybe (Entity RunResult) -> Language -> Widget
+footerWidget isComposingSnippet isRunnable isOwner runParams runResult lang =
     let
         (stdinData, _, _) = formatRunParams runParams
         (stdoutRes, stderrRes, errorRes, hasRunResult) = formatRunResult runResult
