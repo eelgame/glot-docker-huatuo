@@ -4,7 +4,11 @@ $newline never
   <div class="panel panel-default">
     <div class="panel-heading">
       $if isRunnable
-        <button class="btn btn-primary item run"><i class="fa fa-play"></i> Run #{languageName lang}
+        <button class="btn btn-primary item run"><i class="fa fa-play"></i> Run
+
+        $if (languageName lang) == "C#"
+          <button class="btn btn-primary item run-huatuo"><i class="fa fa-play"></i> Run Huatuo
+
         <div class="btn-group item" data-toggle="buttons">
           $if hasRunResult
             <label class="btn btn-primary show-input-label"><input type="radio" name="options" class="show-input" autocomplete="off"> Input
