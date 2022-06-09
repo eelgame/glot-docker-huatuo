@@ -1,0 +1,139 @@
+(function() {
+
+    // Prevent newline in contenteditable fields
+    $(document).on("keydown", "[contenteditable]", function(e) {
+        if (e.which == 13) {
+            $(e.target).blur();
+            window.getSelection().removeAllRanges();
+        }
+    });
+
+    $(document).on("click", ".run", function(e) {
+        run();
+    });
+
+    Editor.onRunCodeKeyComboPressed(function() {
+        run();
+    });
+
+    $(document).on("click", ".save", function(e) {
+        e.preventDefault();
+        save();
+    });
+
+    $(document).on("click", ".delete", function(e) {
+        e.preventDefault();
+        if (confirm("Are you sure you want to delete this snippet?")) {
+            deleteSnippet();
+        }
+    });
+
+    $(document).on("click", ".fork", function(e) {
+        var files = Editor.getFiles();
+        Fork.setFiles(files);
+        Editor.clean();
+        Location.set("@{ComposeR $ Language.identifier language}");
+    });
+
+    function run() {
+        EditorFooter.showOutputTab(true);
+        EditorFooter.clear();
+        EditorFooter.showInfo("Running...");
+
+        var version = Meta.getLanguageVersion();
+        var url = "@?{(RunR $ Language.identifier language, [("snippet", slug)])}" + "&" + $.param({version: version});
+        var payload = {
+            files: Editor.getFiles(),
+            stdin: EditorFooter.getStdin(),
+            command: Meta.getRunCommand(),
+        };
+
+        XHR.jsonPost(url, payload).then(function(data) {
+            EditorFooter.show(data);
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        }).finally(function() {
+            EditorFooter.hideInfo();
+        });
+    }
+
+    function save() {
+        var payload = {
+            language: #{toJSON $ Language.identifier language},
+            title: getTitle(),
+            public: Meta.isPublic(),
+            files: Editor.getFiles(),
+        };
+
+        var version = Meta.getLanguageVersion();
+        var url = "@{SnippetR slug}" + "?" + $.param({
+            version: version,
+            command: Meta.getRunCommand(),
+            stdin: EditorFooter.getStdin(),
+        });
+
+        XHR.jsonPut(url, payload).then(function(data) {
+            Editor.clean();
+            Location.reload();
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        });
+    }
+
+    function deleteSnippet() {
+        XHR.delete("@{SnippetR slug}").then(function(data) {
+            Editor.clean();
+            Location.set("@{SnippetsR}");
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        });
+    }
+
+    function getTitle() {
+        return $("#snippet-title").text();
+    }
+
+    // Require confirmation if user tries to unload page with unsaved changes
+    window.onbeforeunload = function() {
+        if (!Editor.isClean()) {
+            return "You have unsaved changes!";
+        }
+    };
+
+    // Add share popover listener
+    $(document).popover({
+        selector: ".share",
+        container: "body",
+        content: $("#share-content").html(),
+        html: true,
+    });
+
+    // Hide share popover clicking outside or hitting escape
+    $(document).on("click", ".share", function(e) {
+        // Prevent dropdown from hiding
+        e.preventDefault();
+        e.stopPropagation();
+
+        function clickHandler(e) {
+            if (!$(e.target).parents(".popover").length) {
+                hidePopover();
+            }
+        };
+
+        function escapeHandler(e) {
+            if (e.keyCode == 27) {
+                hidePopover();
+            }
+        };
+
+        function hidePopover() {
+            $(".share").popover("hide");
+            $(document).off("click", clickHandler);
+            $(document).off("keyup", escapeHandler);
+        }
+
+        $(document).on("click", clickHandler);
+        $(document).on("keyup", escapeHandler);
+    });
+
+})();

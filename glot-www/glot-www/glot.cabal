@@ -1,0 +1,151 @@
+name:              glot
+version:           0.0.0
+cabal-version:     >= 1.8
+build-type:        Simple
+
+Flag dev
+    Description:   Turn on development settings, like auto-reload templates.
+    Default:       False
+
+Flag library-only
+    Description:   Build for use with "yesod devel"
+    Default:       False
+
+library
+    hs-source-dirs: ., app
+    exposed-modules: Application
+                     Foundation
+                     Import
+                     Import.NoFoundation
+                     Model
+                     Settings
+                     Settings.StaticFiles
+                     Settings.Environment
+                     Handler.Common
+                     Handler.Home
+                     Handler.Compose
+                     Handler.Learn
+                     Handler.Snippet
+                     Handler.Snippets
+                     Handler.UserSnippets
+                     Handler.Run
+                     Handler.Account
+                     Handler.Alert
+                     Handler.Meta
+                     Handler.Api.Snippets
+                     Handler.Api.Run
+                     Util.Shakespare
+                     Util.Handler
+                     Util.Multiline
+                     Util.Slug
+                     Util.User
+                     Util.Hash
+                     Util.Snippet
+                     Util.Alert
+                     Util.Persistent
+                     Widget.Editor
+                     Widget.Languages
+                     Widget.Pagination
+                     Widget.Share
+                     Widget.CarbonAds
+                     Yesod.Auth.Simple
+                     Glot.Pagination
+                     Glot.Snippet
+                     Glot.DockerRun
+                     Glot.Language
+
+    if flag(dev) || flag(library-only)
+        cpp-options:   -DDEVELOPMENT
+        ghc-options:   -Wall -fwarn-tabs -O0
+    else
+        ghc-options:   -Wall -fwarn-tabs -O2
+
+    extensions: TemplateHaskell
+                QuasiQuotes
+                OverloadedStrings
+                NoImplicitPrelude
+                CPP
+                MultiParamTypeClasses
+                TypeFamilies
+                GADTs
+                GeneralizedNewtypeDeriving
+                FlexibleContexts
+                EmptyDataDecls
+                NoMonomorphismRestriction
+                DeriveDataTypeable
+                ViewPatterns
+                TupleSections
+                RecordWildCards
+
+    build-depends: base
+                 , yesod
+                 , yesod-core
+                 , yesod-auth
+                 , yesod-static
+                 , yesod-form
+                 , classy-prelude
+                 , classy-prelude-yesod
+                 , bytestring
+                 , text
+                 , persistent
+                 , persistent-postgresql
+                 , persistent-template
+                 , template-haskell
+                 , shakespeare
+                 , hjsmin
+                 , monad-control
+                 , wai-extra
+                 , yaml
+                 , directory
+                 , warp
+                 , data-default
+                 , aeson
+                 , monad-logger
+                 , fast-logger
+                 , wai-logger
+                 , file-embed
+                 , safe
+                 , unordered-containers
+                 , containers
+                 , time
+                 , base64-bytestring
+                 , base16-bytestring
+                 , clientsession
+                 , email-validate
+                 , pwstore-fast
+                 , cryptohash
+                 , http-types
+                 , uuid
+                 , wai
+                 , regex-compat
+                 , iso8601-time
+                 , blaze-html
+                 , blaze-markup
+                 , case-insensitive
+                 , hailgun
+                 , req
+                 , http-client
+                 , modern-uri
+                 , dhall
+                 , either
+
+executable         glot
+    if flag(library-only)
+        Buildable: False
+
+    main-is:           main.hs
+    hs-source-dirs:    app
+    build-depends:     base, glot
+
+    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N
+
+
+executable         glot-image-tester
+    if flag(library-only)
+        Buildable: False
+
+    main-is:           image-tester.hs
+    hs-source-dirs:    app
+    build-depends:     base, process, text, bytestring, aeson, glot
+
+    ghc-options:       -threaded -O2 -rtsopts -with-rtsopts=-N

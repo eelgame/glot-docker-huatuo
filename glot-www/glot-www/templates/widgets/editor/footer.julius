@@ -1,0 +1,129 @@
+window.EditorFooter = (function() {
+
+    function showInputTab(setActiveButton) {
+        $(".editor-footer .input").removeClass("hide");
+        $(".editor-footer .output").addClass("hide");
+
+        if (setActiveButton) {
+            $(".editor-footer .show-input-label").addClass("active");
+            $(".editor-footer .show-output-label").removeClass("active");
+        }
+    }
+
+    function showOutputTab(setActiveButton) {
+        $(".editor-footer .output").removeClass("hide");
+        $(".editor-footer .input").addClass("hide");
+
+        if (setActiveButton) {
+            $(".editor-footer .show-output-label").addClass("active");
+            $(".editor-footer .show-input-label").removeClass("active");
+        }
+    }
+
+    function show(result) {
+        for (var key in result) {
+            var value = result[key];
+            if (value) {
+                showPanel(key, value);
+            }
+        }
+
+        checkExpandButton();
+    }
+
+    function checkExpandButton() {
+        var outputEl = $(".editor-footer .output");
+        var showFullEl = $(".editor-footer .show-full-height");
+
+        if (outputEl.length === 0) {
+            return;
+        }
+
+        if (outputEl[0].scrollHeight - outputEl.height() > 200) {
+            showFullEl.removeClass("hide");
+        }
+    }
+
+    function showInfo() {
+        showPanel("info", "Running...");
+    }
+
+    function hideInfo() {
+        hidePanel("info");
+    }
+
+    function clear() {
+        ["info", "stdout", "stderr", "error"].forEach(function(name) {
+            hidePanel(name);
+        });
+
+        showDefaultHeight();
+        $(".editor-footer .show-full-height").addClass("hide");
+    }
+
+    function showPanel(name, value) {
+        var selector = ".editor-footer .output ." + name;
+        $(selector).removeClass("hide");
+        $(selector + " .body").text(value);
+    }
+
+    function hidePanel(name) {
+        var selector = ".editor-footer .output ." + name;
+        $(selector).addClass("hide");
+    }
+
+    function getStdin() {
+        return $(".editor-footer .stdin").val();
+    }
+
+    $(document).on("change", ".editor-footer .show-input", function(e) {
+        var radio = $(e.target);
+        if (radio.prop("checked")) {
+            showInputTab(false);
+        }
+    });
+
+    $(document).on("change", ".editor-footer .show-output", function(e) {
+        var radio = $(e.target);
+        if (radio.prop("checked")) {
+            showOutputTab(false);
+        }
+    });
+
+    function showFullHeight() {
+        $(".editor-footer .footer-left").addClass("full-height");
+        $(".editor-footer .output").addClass("full-height");
+    }
+
+    function showDefaultHeight() {
+        $(".editor-footer .footer-left").removeClass("full-height");
+        $(".editor-footer .output").removeClass("full-height");
+    }
+
+    $(document).on("click", ".editor-footer .show-full-height", function(e) {
+        e.preventDefault();
+        $(".editor-footer .show-full-height").addClass("hide");
+        showFullHeight();
+
+        // Force redraw of output to fix scrollbar width bug
+        $(".editor-footer .output").addClass("hide");
+        setTimeout(function() {
+            $(".editor-footer .output").removeClass("hide");
+        }, 1);
+    });
+
+    $(document).ready(function() {
+        checkExpandButton();
+    });
+ 
+    return {
+        showInputTab: showInputTab,
+        showOutputTab: showOutputTab,
+        showInfo: showInfo,
+        hideInfo: hideInfo,
+        show: show,
+        clear: clear,
+        getStdin: getStdin,
+    };
+
+})();

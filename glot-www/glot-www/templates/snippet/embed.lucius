@@ -1,0 +1,3 @@
+.btn .dropdown-toggle {
+    display: none;
+}

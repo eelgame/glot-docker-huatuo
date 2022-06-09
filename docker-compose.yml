@@ -1,0 +1,61 @@
+version: '3.1'
+services:
+  www:
+    build: ./glot-www
+    environment:
+      PGHOST: pg
+      PGUSER: root
+      PGPASS: 123456
+      PORT: 3000
+      IP_FROM_HEADER: true
+      APPROOT: ${APPROOT}
+      DOCKER_RUN_ACCESS_TOKEN: donot-worry
+      DOCKER_RUN_BASE_URL: "http://run:8088"
+      DOCKER_RUN_RESPONSE_TIMEOUT: "60"
+    ports:
+      - "3000:3000"
+    links:
+      - pg
+      - run
+    depends_on:
+      - pg
+  pg:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: glot
+  run:
+    build: ./docker-run
+    ports:
+      - "8088:8088"
+    environment:
+      LANG: C.UTF-8
+      API_ACCESS_TOKEN: donot-worry
+      SERVER_LISTEN_ADDR: 0.0.0.0
+      SERVER_LISTEN_PORT: 8088
+      SERVER_WORKER_THREADS: 10
+      DOCKER_UNIX_SOCKET_PATH: /var/run/docker.sock
+      DOCKER_UNIX_SOCKET_READ_TIMEOUT: 3
+      DOCKER_UNIX_SOCKET_WRITE_TIMEOUT: 3
+      DOCKER_CONTAINER_HOSTNAME: glot
+      DOCKER_CONTAINER_USER: glot
+      DOCKER_CONTAINER_MEMORY: 1000000000
+      DOCKER_CONTAINER_NETWORK_DISABLED: true
+      DOCKER_CONTAINER_ULIMIT_NOFILE_SOFT: 90
+      DOCKER_CONTAINER_ULIMIT_NOFILE_HARD: 100
+      DOCKER_CONTAINER_ULIMIT_NPROC_SOFT: 90
+      DOCKER_CONTAINER_ULIMIT_NPROC_HARD: 100
+      DOCKER_CONTAINER_CAP_DROP: "MKNOD NET_RAW NET_BIND_SERVICE"
+      DOCKER_CONTAINER_READONLY_ROOTFS: true
+      DOCKER_CONTAINER_TMP_DIR_PATH: /tmp
+      DOCKER_CONTAINER_TMP_DIR_OPTIONS: "rw,noexec,nosuid"
+      DOCKER_CONTAINER_WORK_DIR_PATH: /home/glot
+      DOCKER_CONTAINER_WORK_DIR_OPTIONS: "rw,exec,nosuid"
+      RUN_MAX_EXECUTION_TIME: 15
+      RUN_MAX_OUTPUT_SIZE: 100000
+      RUST_LOG: debug
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  csharp:
+    image: 'glot/csharp:latest'

@@ -1,0 +1,21 @@
+.actions {
+    margin-top: 16px;
+}
+
+.actions .btn {
+    margin-right: 16px;
+}
+
+#snippet-title {
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+#snippet-title[contenteditable] {
+    border-bottom: 1px dashed #ccc;
+    padding: 5px;
+}
+
+.popover {
+    max-width: 400px;
+}

@@ -1,0 +1,33 @@
+.editors .editor {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+}
+
+.editor-widget .settings {
+    float: right;
+    margin-right: -2px;
+}
+
+.close-file {
+    margin-left: 10px;
+    font-size: 12px;
+    line-height: 18px;
+    color: red;
+    opacity: 0.4;
+}
+
+.close-file:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.container.full-width {
+    width: 100%;
+}
+
+.meta .logo {
+    width: 14px;
+    height: 14px;
+}

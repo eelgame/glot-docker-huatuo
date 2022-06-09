@@ -1,0 +1,74 @@
+User
+    email Text
+    password Text
+    created UTCTime
+    modified UTCTime
+    UniqueUser email
+    deriving Typeable
+
+
+Profile
+    userId UserId
+    snippetsApiId Text
+    username Text
+    name Text
+    created UTCTime
+    modified UTCTime
+    UniqueProfile userId
+    UniqueSnippetsApiId snippetsApiId
+    UniqueUsername username
+    deriving Typeable Show
+
+ApiUser
+    userId UserId
+    token Text
+    created UTCTime
+    modified UTCTime
+    UniqueApiUser userId
+    UniqueApiToken token
+    deriving Typeable Show
+
+-- TODO: Reference codeSnippetSnippetId instead of using slug
+-- 1. Add new nullable codeSnippetId column
+-- 2. Run query to fill id column
+-- 3. Make id column non-nullable
+-- 4. Delete slug column
+RunParams
+    snippetId Text
+    stdin Text
+    languageVersion Text
+    runCommand Text
+    UniqueRunParams snippetId
+    deriving Typeable
+
+RunResult
+    snippetId Text
+    filesHash Text
+    language Text
+    stdout Text
+    stderr Text
+    error Text
+    created UTCTime
+    UniqueRunResult snippetId
+    UniqueRunResultHash snippetId filesHash
+    deriving Typeable
+
+CodeSnippet
+    slug Text
+    language Language.Id
+    title Text
+    public Bool
+    userId UserId Maybe default=NULL
+    created UTCTime
+    modified UTCTime
+    UniqueCodeSnippetSlug slug
+    deriving Typeable Show
+
+CodeFile
+    codeSnippetId CodeSnippetId
+    name Text
+    content ByteString
+    deriving Typeable
+
+
+ -- By default this file is used in Model.hs (which is imported by Foundation.hs)

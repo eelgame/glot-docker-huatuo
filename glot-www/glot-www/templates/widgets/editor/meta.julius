@@ -1,0 +1,37 @@
+window.Meta = (function() {
+
+    function getRunCommand() {
+        if (!runCommandEnabled()) {
+            return "";
+        }
+
+        return $("#cmd-input").val();
+    }
+
+    function runCommandEnabled() {
+        return $("#cmd-checkbox").is(":checked");
+    }
+
+    function getLanguageVersion() {
+        return $("#lang-version").val();
+    }
+
+    function isPublic() {
+        return $("#public").val() === "true";
+    }
+
+    return {
+        getRunCommand: getRunCommand,
+        getLanguageVersion: getLanguageVersion,
+        isPublic: isPublic,
+    };
+})();
+
+
+(function() {
+    // Disable / enable command input
+    $(document).on("click", "#cmd-checkbox", function(e) {
+        var checked = $(e.target).is(":checked");
+        $("#cmd-input").prop('disabled', !checked);
+    });
+})();

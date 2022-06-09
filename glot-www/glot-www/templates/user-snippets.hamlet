@@ -1,0 +1,37 @@
+$newline never
+^{navbarWidget Nothing}
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>Snippets by #{profileName profile}
+      $if null snippets
+        <p>No snippets found
+      $else
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="col-language">Language
+              <th class="col-title">Title
+              <th class="col-created">Created
+              <th class="col-visibility">Visibility
+          <tbody>
+          $forall snippet <- snippets
+            <tr>
+              <td>
+                $maybe language <- Language.find languages (codeSnippetLanguage snippet)
+                  <img class="logo" src=@{StaticR $ Language.svgLogoRoute language} alt="#{Language.name language} logo">
+                  <a class="language" href="@?{(UserSnippetsR username, [("language", Language.idToText $ codeSnippetLanguage snippet)])}">#{Language.name language}
+
+                $nothing
+                  #{Language.idToText $ codeSnippetLanguage snippet}
+              <td>
+                <a href="@{SnippetR $ codeSnippetSlug snippet}" title="#{Snippet.title snippet}">#{Snippet.title snippet}
+              <td data-iso-date="#{ISO8601.iso8601Show $ codeSnippetCreated snippet}">
+                <span class="formated-date">
+              <td>#{Snippet.visibility snippet}
+      $if Pagination.paginationRequired pagination
+        $maybe languageParam <- maybeLanguageParam
+          ^{paginationWidget (UserSnippetsR username) pagination currentPage [("language", languageParam)]}
+        $nothing
+          ^{paginationWidget (UserSnippetsR username) pagination currentPage []}

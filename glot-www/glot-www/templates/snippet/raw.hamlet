@@ -1,0 +1,6 @@
+$newline never
+
+<ul class="list-unstyled">
+  $forall file <- files
+    <li>
+      <a href="@{SnippetRawFileR slug $ codeFileName file}">#{codeFileName file}

@@ -1,0 +1,337 @@
+window.Editor = (function() {
+
+    function initEditor(id) {
+        var theme = Settings.getTheme();
+        var keybindings = Settings.getKeybindings();
+        var lineCount = Settings.getLineCount() || Settings.calcLineCount();
+
+        var editor = ace.edit(id);
+        editor.setTheme(theme);
+        editor.setKeyboardHandler(keybindings);
+        editor.getSession().setMode(#{toJSON $ Language.mode $ Language.editorConfig language});
+        editor.setOptions({
+            useSoftTabs: #{Julius.rawJS useSoftTabs},
+            tabSize: #{toJSON tabSize},
+            minLines: lineCount,
+            maxLines: lineCount,
+        });
+
+        // Resize to flush stale content
+        resizeEditor(editor);
+    }
+
+    function resizeEditor(editor) {
+        setTimeout(function() {
+            editor.resize();
+        }, 1);
+    }
+
+    function setTheme(theme) {
+        var editorIds = getEditorIds();
+        editorIds.forEach(function(id) {
+            var editor = ace.edit(id);
+            editor.setTheme(theme);
+        });
+    }
+
+    function setLineCount(lineCount) {
+        var editorIds = getEditorIds();
+        editorIds.forEach(function(id) {
+            var editor = ace.edit(id);
+            editor.setOptions({
+                minLines: lineCount,
+                maxLines: lineCount,
+            });
+        });
+    }
+
+    function clean() {
+        var editorIds = getEditorIds();
+        return editorIds.forEach(function(id) {
+            var editor = ace.edit(id);
+            editor.session.getUndoManager().reset();
+        });
+    }
+
+    function isClean() {
+        var editorIds = getEditorIds();
+        return editorIds.every(function(id) {
+            var editor = ace.edit(id);
+            return editor.session.getUndoManager().isClean();
+        });
+    }
+
+    function setKeybindings(keybindings) {
+        var editorIds = getEditorIds();
+        editorIds.forEach(function(id) {
+            var editor = ace.edit(id);
+            editor.setKeyboardHandler(keybindings);
+        });
+    }
+
+    function setFullWidth(fullWidth) {
+        if (fullWidth) {
+            $(".content-container").addClass("full-width");
+        } else {
+            $(".content-container").removeClass("full-width");
+        }
+    }
+
+    function resetEditor(id) {
+        var editor = ace.edit(id);
+        editor.setValue("");
+    }
+
+    function setFiles(files) {
+        files.forEach(function(file, i) {
+            var editorId = "editor-" + (i + 1);
+            initEditor(editorId);
+            setValue(editorId, file.content);
+            setTabTitle(editorId, file.name);
+            showTab(editorId);
+        });
+    }
+
+    function setValue(id, value) {
+        var editor = ace.edit(id);
+        editor.setValue(value);
+    }
+
+    function setActiveTab(elem) {
+        // Ensure selected tab is active and visible
+        $(".editor-widget li.active").removeClass("active");
+        elem.removeClass("hide");
+        elem.addClass("active");
+    }
+
+    function showTab(id) {
+        var selector = ".nav-tabs [data-editor='" + id + "']";
+        $(selector).removeClass("hide");
+    }
+
+    function setTabTitle(id, title) {
+        var selector = ".nav-tabs [data-editor='" + id + "'] .filename";
+        $(selector).text(title);
+    }
+
+    function closeTab(elem) {
+        if (elem.hasClass("active")) {
+            var prevTab = elem.prev();
+            var prevEditorId = prevTab.data("editor");
+            showEditor(prevEditorId);
+            setActiveTab(elem.prev());
+        }
+        elem.addClass("hide");
+    }
+
+    function showEditor(id) {
+        $(".editors .editor:not(.hide)").addClass("hide");
+        $(".editor-footer").removeClass("hide");
+        $("#" + id).removeClass("hide");
+        $("#meta").addClass("hide");
+        $("#settings").addClass("hide");
+
+        // Resize editor
+        var editor = getEditor(id);
+        resizeEditor(editor);
+    }
+
+    function showMeta() {
+        $(".editors .editor:not(.hide)").addClass("hide");
+        $(".editor-footer").addClass("hide");
+        $("#meta").removeClass("hide");
+        $("#settings").addClass("hide");
+    }
+
+    function showSettings() {
+        $(".editors .editor:not(.hide)").addClass("hide");
+        $(".editor-footer").addClass("hide");
+        $("#meta").addClass("hide");
+        $("#settings").removeClass("hide");
+    }
+
+    function getFiles() {
+        var editorIds = getEditorIds();
+        var files = editorIds.map(function(id) {
+            return {
+                name: getFilename(id),
+                content: getContent(id),
+            };
+        });
+
+        // Remove files with no content
+        return files.filter(function(file) {
+            return file.content.length > 0;
+        });
+    }
+
+    function getEditorIds() {
+        return $(".editors .editor").map(function() {
+            return $(this).attr('id');
+        }).toArray();
+    }
+
+    function getContent(editorId) {
+        var editor = getEditor(editorId);
+        return editor.getValue();
+    }
+
+    function getFilename(editorId) {
+        var selector = '.nav-tabs [data-editor="' + editorId + '"] .filename';
+        return $(selector).text();
+    }
+
+    function getEditor(editorId) {
+        return ace.edit(editorId);
+    }
+
+    function onRunCodeKeyComboPressed(callback) {
+        // Trigger callback when the keys cmd-enter (mac) or ctrl-enter (non-mac) is pressed
+        $(document).on('keydown', function (e) {
+            var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            var enterKeyPressed = e.which === 13;
+            var metaKeyPressed = e.metaKey;
+            var ctrlKeyPressed = e.ctrlKey
+            var shouldRunCode = enterKeyPressed && ((isMac && metaKeyPressed) || (!isMac && ctrlKeyPressed))
+
+            if (shouldRunCode) {
+                e.preventDefault();
+                callback();
+            }
+        });
+    }
+
+    return {
+        initEditor: initEditor,
+        resetEditor: resetEditor,
+        setFiles: setFiles,
+        setActiveTab: setActiveTab,
+        closeTab: closeTab,
+        showEditor: showEditor,
+        showMeta: showMeta,
+        showSettings: showSettings,
+        setTheme: setTheme,
+        setKeybindings: setKeybindings,
+        setFullWidth: setFullWidth,
+        setLineCount: setLineCount,
+        getFiles: getFiles,
+        clean: clean,
+        isClean: isClean,
+        onRunCodeKeyComboPressed: onRunCodeKeyComboPressed,
+    };
+
+})();
+
+window.Fork = (function() {
+    function hasFiles() {
+        if (localStorage.forkedFiles) {
+            return true;
+        }
+        return false;
+    }
+
+    function setFiles(files) {
+        localStorage.forkedFiles = JSON.stringify(files);
+    }
+
+    function getFiles() {
+        if (!hasFiles()) {
+            return null;
+        }
+
+        var files = JSON.parse(localStorage.forkedFiles);
+        delete localStorage.forkedFiles;
+        return files;
+    }
+
+    return {
+        hasFiles: hasFiles,
+        setFiles: setFiles,
+        getFiles: getFiles,
+    };
+})();
+
+
+(function() {
+    // Handle editor tab clicks
+    $(document).on("click", ".nav-tabs [data-editor]", function(e) {
+        var tab = $(e.target).closest("li");
+        var editorId = tab.data("editor");
+        Editor.showEditor(editorId);
+        Editor.setActiveTab(tab);
+    });
+
+    // Handle meta tab clicks
+    $(document).on("click", ".nav-tabs .meta", function(e) {
+        var tab = $(e.target).closest("li");
+        Editor.setActiveTab(tab);
+        Editor.showMeta();
+    });
+
+
+    // Handle settings tab clicks
+    $(document).on("click", ".nav-tabs .settings", function(e) {
+        var tab = $(e.target).closest("li");
+        Editor.setActiveTab(tab);
+        Editor.showSettings();
+    });
+
+    // Handle new file clicks
+    $(document).on("click", ".new-file", function(e) {
+        e.preventDefault();
+
+        var tab = $("[data-editor].hide").first();
+        if (tab.length === 0) {
+            return;
+        }
+
+        var editorId = tab.data("editor");
+        Editor.initEditor(editorId);
+        Editor.showEditor(editorId);
+        Editor.setActiveTab(tab);
+    });
+
+    // Handle close file clicks
+    $(document).on("click", ".close-file", function(e) {
+        e.stopPropagation();
+
+        if (!confirm("Are you sure you want to delete this file?")) {
+            return;
+        }
+
+        var tab = $(e.target).parents("li[data-editor]");
+        var editorId = tab.data("editor");
+        Editor.resetEditor(editorId);
+        Editor.closeTab(tab);
+    });
+
+    // Prevent default on # href's
+    $(document).on("click", '.nav-tabs a[href="#"]', function(e) {
+        e.preventDefault();
+    });
+
+    // Show filename prompt when clicking on the active tab
+    $(document).on("click", "li.active .filename", function(e) {
+        var elem = $(e.target);
+        var filename = prompt("Enter a new filename", elem.text())
+
+        if (filename) {
+            elem.text(filename);
+        }
+    });
+
+    if (Fork.hasFiles()) {
+        // Initialize editors with forked files
+        var files = Fork.getFiles();
+        Editor.setFiles(files);
+    } else {
+        // Initialize editors with default content
+        // Additional editors are loaded when a new file is added
+        var fileCount = #{toJSON $ length files};
+        for (var i = 1; i <= fileCount; i++) {
+            Editor.initEditor("editor-" + i);
+        }
+    }
+
+    Editor.setFullWidth(Settings.getFullWidth());
+})();

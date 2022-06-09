@@ -1,0 +1,16 @@
+(function() {
+
+    $(document).on("click", ".generate", function(e) {
+        e.preventDefault();
+        generate();
+        return false;
+    });
+
+    function generate() {
+        XHR.jsonPut("@{AccountTokenR}", {}).then(function(data) {
+            Location.reload();
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        });
+    }
+})();

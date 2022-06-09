@@ -1,0 +1,33 @@
+(function() {
+
+    $(document).on("click", ".run", function(e) {
+        run();
+    });
+
+    Editor.onRunCodeKeyComboPressed(function() {
+        run();
+    });
+
+    function run() {
+        EditorFooter.showOutputTab(true);
+        EditorFooter.clear();
+        EditorFooter.showInfo("Running...");
+
+        var version = Meta.getLanguageVersion();
+        var url = "@?{(RunR $ Language.identifier language, [("snippet", slug)])}" + "&" + $.param({version: version, persist: false});
+        var payload = {
+            files: Editor.getFiles(),
+            stdin: EditorFooter.getStdin(),
+            command: Meta.getRunCommand(),
+        };
+
+        XHR.jsonPost(url, payload).then(function(data) {
+            EditorFooter.show(data);
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        }).finally(function() {
+            EditorFooter.hideInfo();
+        });
+    }
+
+})();

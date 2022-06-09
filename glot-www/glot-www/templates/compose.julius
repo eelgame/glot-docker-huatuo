@@ -1,0 +1,85 @@
+(function() {
+
+    // Prevent newline in contenteditable fields
+    $(document).on("keydown", "[contenteditable]", function(e) {
+        if (e.which == 13) {
+            $(e.target).blur();
+            window.getSelection().removeAllRanges();
+        }
+    });
+
+    $(document).on("click", ".run", function(e) {
+        run();
+    });
+
+    Editor.onRunCodeKeyComboPressed(function() {
+        run();
+    });
+
+    $(document).on("click", ".save-public", function(e) {
+        e.preventDefault();
+        save({public: true});
+    });
+
+    $(document).on("click", ".save-secret", function(e) {
+        e.preventDefault();
+        save({public: false});
+    });
+
+    function run() {
+        EditorFooter.showOutputTab(true);
+        EditorFooter.clear();
+        EditorFooter.showInfo("Running...");
+
+        var version = Meta.getLanguageVersion();
+        var url = "@{RunR langId}" + "?" + $.param({version: version});
+        var payload = {
+            files: Editor.getFiles(),
+            stdin: EditorFooter.getStdin(),
+            command: Meta.getRunCommand(),
+        };
+
+        XHR.jsonPost(url, payload).then(function(data) {
+            EditorFooter.show(data);
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        }).finally(function() {
+            EditorFooter.hideInfo();
+        });
+    }
+
+    function save(options) {
+        var payload = {
+            language: #{toJSON langId},
+            title: getTitle(),
+            public: options.public,
+            files: Editor.getFiles(),
+        };
+
+        var version = Meta.getLanguageVersion();
+        var url = "@{ComposeR langId}" + "?" + $.param({
+            version: version,
+            command: Meta.getRunCommand(),
+            stdin: EditorFooter.getStdin(),
+        });
+
+        XHR.jsonPost(url, payload).then(function(data) {
+            Editor.clean();
+            Location.set(data.url);
+        }).catch(function(msg) {
+            Alert.danger(msg);
+        });
+    }
+
+    function getTitle() {
+        return $("#snippet-title").text();
+    }
+
+    // Require confirmation if user tries to unload page with unsaved changes
+    window.onbeforeunload = function() {
+        if (!Editor.isClean()) {
+            return "You have unsaved changes!";
+        }
+    };
+
+})();

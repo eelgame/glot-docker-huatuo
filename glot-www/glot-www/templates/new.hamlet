@@ -1,0 +1,3 @@
+$newline never
+^{navbarWidget Nothing}
+^{languagesWidget languages}

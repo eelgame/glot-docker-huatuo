@@ -1,0 +1,18 @@
+export APPROOT="http://localhost:3000"
+export HOST="127.0.0.1"
+export PORT="3000"
+export IP_FROM_HEADER="true"
+export PGHOST="localhost"
+export PGPORT="5432"
+export PGUSER="glot"
+export PGPASS="glot"
+export PGDATABASE="glot"
+export DOCKER_RUN_BASE_URL="http://localhost:8088"
+export DOCKER_RUN_ACCESS_TOKEN="magmatic-handyman-confirm-cauldron"
+export DOCKER_RUN_RESPONSE_TIMEOUT="60"
+export MAILGUN_DOMAIN="example.com"
+export MAILGUN_API_KEY="key-12345"
+export EMAIL_FROM_ADDRESS="glot@glot.io"
+#export ANALYTICS_ID=""
+
+stack exec yesod devel

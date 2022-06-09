@@ -1,0 +1,17 @@
+$newline never
+^{navbarWidget (Just (Language.identifier language))}
+
+<div class="container content-container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="snippet-header">
+        <div class="snippet-header-title">
+          $if userIsSnippetOwner
+            <h2 id="snippet-title" contenteditable>#{Snippet.title snippet}
+          $else
+            <h2 id="snippet-title">#{Snippet.title snippet}
+      ^{editorWidget userIsSnippetOwner language snippet files profile runParams}
+      ^{footerWidget False False (Language.isRunnable language) userIsSnippetOwner runParams runResult}
+      <div class="hide">
+        <div id="share-content">
+          ^{shareWidget slug}

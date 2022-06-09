@@ -1,0 +1,4 @@
+$newline never
+
+^{editorWidget False language snippet files profile runParams}
+^{footerWidget True False (Language.isRunnable language) False runParams Nothing}

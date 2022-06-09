@@ -1,0 +1,12 @@
+.current-token {
+    margin-top: 20px;
+}
+
+.token-value {
+    max-width: 350px;
+    padding-left: 15px;
+}
+
+.divider {
+    margin-bottom: 10px;
+}

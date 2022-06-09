@@ -1,0 +1,63 @@
+$newline never
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation
+        <span class="icon-bar">
+        <span class="icon-bar">
+        <span class="icon-bar">
+      <a class="navbar-brand" href="@{HomeR}">
+        <img src="@{StaticR img_logo_gray_svg}" class="logo"/>
+
+    $# Collect the nav links, forms, and other content for toggling
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav">
+        <li :currentPage == ComposeLanguagesPage:.active>
+          <a href="@{ComposeLanguagesR}"><i class="fa fa-edit"></i> New
+        $maybe langId <- maybeLangId
+          <li :currentPage == LearnPage:.active>
+            <a href="@{LearnLanguageR langId}"><i class="fa fa-graduation-cap"></i> Learn
+        $nothing
+          <li :currentPage == LearnPage:.active>
+            <a href="@{LearnR}"><i class="fa fa-graduation-cap"></i> Learn
+        <li :currentPage == SnippetsPage:.active>
+          <a href="@{SnippetsR}"><i class="fa fa-list"></i> Snippets
+        $maybe profile <- mProfile
+          <li :currentPage == MySnippetsPage:.active>
+            <a href="@{UserSnippetsR $ profileUsername profile}"><i class="fa fa-list"></i> My Snippets
+        <li :currentPage == MetaPage:.active class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-navicon"></i> Meta
+            <b class="caret">
+          <ul class="dropdown-menu">
+            <li>
+              <a href="https://twitter.com/glotcode"><i class="fa fa-twitter"></i> News
+            <li>
+              <a href="@{MetaAboutR}"><i class="fa fa-info-circle"></i> About
+            <li>
+              <a href="@{MetaApiDocsR}"><i class="fa fa-exchange"></i> API Docs
+            <li>
+              <a href="https://github.com/glotcode/glot"><i class="fa fa-github"></i> Source Code
+
+      <ul class="nav navbar-nav navbar-right">
+        $maybe profile <- mProfile
+          <li :currentPage == AccountPage:.active class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> #{profileUsername profile}
+              <b class="caret">
+            <ul class="dropdown-menu">
+              <li>
+                <a href="@{AccountProfileR}"><i class="fa fa-user"></i> Profile
+              <li>
+                <a href="@{AccountTokenR}"><i class="fa fa-key"></i> Api Token
+              <li class="divider">
+              <li>
+                <a href="@{AuthR LogoutR}"><i class="fa fa-sign-out"></i> Logout
+        $nothing
+          <li :currentPage == AccountPage:.active class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Account
+              <b class="caret">
+            <ul class="dropdown-menu">
+              <li>
+                <a href="@{AuthR registerR}"><i class="fa fa-user"></i> Register
+              <li>
+                <a href="@{AuthR loginR}"><i class="fa fa-sign-in"></i> Login

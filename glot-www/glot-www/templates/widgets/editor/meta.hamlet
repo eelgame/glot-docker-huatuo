@@ -1,0 +1,68 @@
+$newline never
+<table class="meta-table run-settings table">
+  <thead>
+    <tr>
+      <th class="left-col">Run Settings
+      <th>
+  <tbody>
+    <tr>
+      <td>Language
+      <td>#{Language.name language}
+    $maybe runConfig <- Language.runConfig language
+      <tr>
+        <td>Language Version
+        <td>
+          $if null versions
+            Unavailable
+          $else
+            <select id="lang-version">
+              $forall version <- versions
+                <option value="#{version}" :savedVersion == version:selected>#{version}
+      <tr>
+        <td>Run Command
+        $if null savedRunCommand
+          <td>
+            <div class="input-group input-group-sm cmd-group">
+              <span class="input-group-addon">
+                <input type="checkbox" id="cmd-checkbox">
+              <input type="text" class="form-control" id="cmd-input" value="#{Language.runCommand runConfig}" disabled>
+        $else
+          <td>
+            <div class="input-group input-group-sm cmd-group">
+              <span class="input-group-addon">
+                <input type="checkbox" id="cmd-checkbox" checked>
+              <input type="text" class="form-control" id="cmd-input" value="#{savedRunCommand}">
+
+$if not $ isComposing snippet
+  <table class="meta-table metadata table">
+    <thead>
+      <tr>
+        <th class="left-col">Snippet Metadata
+        <th>
+    <tbody>
+      <tr>
+        <td>Owner
+        <td>
+          $maybe Entity _ profile <- mProfile
+            <a href="@{UserSnippetsR $ profileUsername profile}">#{profileName profile}
+
+          $nothing
+            Anonymous
+      <tr>
+        <td>Created
+        <td data-iso-date="#{ISO8601.iso8601Show $ codeSnippetCreated snippet}">
+          <span class="formated-date">
+      <tr>
+        <td>Modified
+        <td data-iso-date="#{ISO8601.iso8601Show $ codeSnippetModified snippet}">
+          <span class="formated-date">
+      <tr>
+        <td>Visibility
+        <td>
+          $if userIsSnippetOwner
+            <select id="public">
+              <option value="true" :codeSnippetPublic snippet == True:selected>Public
+              <option value="false" :codeSnippetPublic snippet == False:selected>Secret
+
+          $else
+            #{Snippet.visibility snippet}
