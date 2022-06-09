@@ -526,7 +526,16 @@ int main() {
     cout << "Hello World!";
     return 0;
 }|]
-languageDefaultContent Huatuo = languageDefaultContent Csharp = [multiline|using System;
+languageDefaultContent Csharp = [multiline|using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class MainClass {
+    static void Main() {
+        Console.WriteLine("Hello World!");
+    }
+}|]
+languageDefaultContent Huatuo = [multiline|using System;
 using System.Collections.Generic;
 using System.Linq;
 
