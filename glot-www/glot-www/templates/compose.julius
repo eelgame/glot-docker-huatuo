@@ -8,6 +8,28 @@
         }
     });
 
+    $(document).on("click", ".run-huatuo", function(e) {
+        EditorFooter.showOutputTab(true);
+        EditorFooter.clear();
+        EditorFooter.showInfo("Running...");
+
+        var version = Meta.getLanguageVersion();
+        var url = "huatuo" + "?" + $.param({version: version});
+        var payload = {
+            files: Editor.getFiles(),
+            stdin: EditorFooter.getStdin(),
+            command: "mcs -out:a.exe main.cs && /Builds/huatuo --glot -a a.exe",
+        };
+
+        XHR.jsonPost(url, payload).done(function(data) {
+            EditorFooter.show(data);
+        }).fail(function(xhr) {
+            Alert.danger(xhr.responseJSON.message);
+        }).always(function() {
+            EditorFooter.hideInfo();
+        });
+    });
+
     $(document).on("click", ".run", function(e) {
         EditorFooter.showOutputTab(true);
         EditorFooter.clear();
