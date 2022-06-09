@@ -5,7 +5,7 @@
         RunResult.showInfo("Running...");
 
         var version = Meta.getLanguageVersion();
-        var url = "run/huatuo?snippet=@{slug}" + "&" + $.param({version: version, persist: false});
+        var url = "run/huatuo?@{[("snippet", slug)]}" + "&" + $.param({version: version, persist: false});
         var payload = {
             files: Editor.getFiles(),
             stdin: "",
