@@ -92,7 +92,7 @@ ensureSnippetOwner :: Maybe UserId -> CodeSnippet -> Handler ()
 ensureSnippetOwner maybeUserId CodeSnippet{..} =
     case (maybeUserId, codeSnippetUserId) of
         (Just userId, Just snippetUserId) ->
-            if userId == snippetUserId || snippetUserId == Nothing then
+            if userId == snippetUserId then
                 pure ()
 
             else
