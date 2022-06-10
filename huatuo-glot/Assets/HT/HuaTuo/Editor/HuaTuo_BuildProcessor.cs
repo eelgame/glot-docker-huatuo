@@ -45,6 +45,7 @@ namespace HuaTuo.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            HuaTuoEditorHelper.ClearBuildCache();
             Environment.SetEnvironmentVariable("UNITY_IL2CPP_PATH", "");
             try
             {
