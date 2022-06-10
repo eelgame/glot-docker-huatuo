@@ -94,12 +94,11 @@ ensureSnippetOwner maybeUserId CodeSnippet{..} =
         (Just userId, Just snippetUserId) ->
             if userId == snippetUserId then
                 pure ()
-            else if isNothing (codeSnippetUserId) then
-                pure ()
             else
                 sendResponseStatus status403 $
                     object [ "error" .= ("You are not the owner of this snippet" :: Text) ]
-
+        (_, Nothing) -> 
+            pure ()
         _ ->
             sendResponseStatus status403 $
                 object [ "error" .= ("You are not the owner of this snippet" :: Text) ]
