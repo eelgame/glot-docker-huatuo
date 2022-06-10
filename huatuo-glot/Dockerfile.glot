@@ -16,7 +16,7 @@ RUN mono --version
 ADD Glot-Linux /Builds
 RUN chmod +x /Builds/huatuo
 
-ADD https://github.com/eelgame/code-runner/releases/download/v1.0.4/code-runner_linux-x64.tar.gz /
+ADD https://github.com/eelgame/code-runner/releases/download/v1.0.5/code-runner_linux-x64.tar.gz /
 RUN tar xzvf /code-runner_linux-x64.tar.gz
 
 CMD [ "/code-runner", "--path", "/home/glot" ]
