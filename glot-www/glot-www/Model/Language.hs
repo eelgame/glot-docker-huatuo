@@ -205,6 +205,7 @@ languageFileExt Cpp = "cpp"
 languageFileExt Crystal = "cr"
 languageFileExt Csharp = "cs"
 languageFileExt Huatuo = "cs"
+languageFileExt HuatuoFocus = "cs"
 languageFileExt D = "d"
 languageFileExt Elixir = "ex"
 languageFileExt Elm = "elm"
@@ -334,6 +335,7 @@ languageAceMode Cpp = "ace/mode/c_cpp"
 languageAceMode Crystal = "ace/mode/crystal"
 languageAceMode Csharp = "ace/mode/csharp"
 languageAceMode Huatuo = "ace/mode/csharp"
+languageAceMode HuatuoFocus = "ace/mode/csharp"
 languageAceMode D = "ace/mode/d"
 languageAceMode Elixir = "ace/mode/elixir"
 languageAceMode Elm = "ace/mode/elm"
@@ -463,6 +465,7 @@ languageRunCmdExample Cpp = "clang++ main.cpp && ./a.out"
 languageRunCmdExample Crystal = "crystal run main.cr"
 languageRunCmdExample Csharp = "mcs -out:a.exe main.cs && mono a.exe"
 languageRunCmdExample Huatuo = "mcs -out:a.exe main.cs && mono a.exe"
+languageRunCmdExample HuatuoFocus = "mcs -out:a.exe main.cs && mono a.exe"
 languageRunCmdExample D = "dmd -ofa.out main.d && ./a.out"
 languageRunCmdExample Elixir = "elixirc main.ex"
 languageRunCmdExample Elm = "elm make --output a.js Main.elm && elm-runner a.js"
@@ -542,6 +545,15 @@ class MainClass {
     }
 }|]
 languageDefaultContent Huatuo = [multiline|using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class MainClass {
+    static void Main() {
+        Console.WriteLine("Hello World!");
+    }
+}|]
+languageDefaultContent HuatuoFocus = [multiline|using System;
 using System.Collections.Generic;
 using System.Linq;
 
