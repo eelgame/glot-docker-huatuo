@@ -18,6 +18,7 @@ data Language
     | Crystal
     | Csharp
     | Huatuo
+    | HuatuoFocus
     | D
     | Elixir
     | Elm
@@ -118,6 +119,7 @@ toLanguage "c" = C
 toLanguage "crystal" = Crystal
 toLanguage "csharp" = Csharp
 toLanguage "huatuo" = Huatuo
+toLanguage "huatuofocus" = HuatuoFocus
 toLanguage "d" = D
 toLanguage "elixir" = Elixir
 toLanguage "elm" = Elm
@@ -372,6 +374,7 @@ languageName Cpp = "C++"
 languageName Crystal = "Crystal"
 languageName Csharp = "C#"
 languageName Huatuo = "huatuo"
+languageName HuatuoFocus = "huatuofocus"
 languageName D = "D"
 languageName Elixir = "Elixir"
 languageName Elm = "Elm"
@@ -417,6 +420,7 @@ languageDockerImage Cpp = "glot/clang:latest"
 languageDockerImage Crystal = "glot/crystal:latest"
 languageDockerImage Csharp = "glot/huatuo:latest"
 languageDockerImage Huatuo = "glot/huatuo:latest"
+languageDockerImage HuatuoFocus = "glot/huatuo-fcg:latest"
 languageDockerImage D = "glot/dlang:latest"
 languageDockerImage Elixir = "glot/elixir:latest"
 languageDockerImage Elm = "glot/elm:latest"
