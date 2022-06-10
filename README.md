@@ -16,6 +16,8 @@ docker-compose up -d
 ```
 
 ## 构建glot/huatuo镜像
+### 可以选择在docker下打包，参考[unity-build-in-docker](unity-build-in-docker)
+
 1. 拷贝[TestDriver](TestDriver.cs) 和 [CommandLine](CommandLine.dll)到unity工程
 2. 打包
 ``` c#
