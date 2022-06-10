@@ -19,7 +19,7 @@ docker-compose up -d
 ### 可以选择在docker下打包，参考[unity-build-in-docker](unity-build-in-docker/docker-compose.yml)
 ```
 # 挂在存放unity证书的目录，推荐使用nas存储，这样可以多台机器使用同个证书
-# 证书文件名Unity_lic.ulf
+# 证书文件名Unity_lic.ulf [证书获取流程](https://game.ci/docs/gitlab/activation)
 volumes:
   unity:
     driver_opts:
