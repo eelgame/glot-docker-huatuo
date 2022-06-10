@@ -94,7 +94,7 @@ ensureSnippetOwner maybeUserId CodeSnippet{..} =
         (Just userId, Just snippetUserId) ->
             if userId == snippetUserId then
                 pure ()
-            else if isNothing (snippetUserId) then
+            else if isNothing (codeSnippetUserId) then
                 pure ()
             else
                 sendResponseStatus status403 $
