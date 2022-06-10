@@ -1,0 +1,6 @@
+[submodule "huatuo-glot/huatuo"]
+	path = huatuo-glot/huatuo
+	url = https://github.com/focus-creative-games/huatuo.git
+[submodule "huatuo-glot/il2cpp_huatuo"]
+	path = huatuo-glot/il2cpp_huatuo
+	url = https://github.com/pirunxi/il2cpp_huatuo.git

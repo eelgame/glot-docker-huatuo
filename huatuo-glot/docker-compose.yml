@@ -1,0 +1,20 @@
+version: '3'
+services:
+  build-glot:
+    build: .
+    command: -executeMethod HuaTuo.Editor.Tools.BuildForGlot
+    working_dir: /w
+    volumes:
+      - .:/w
+      - type: volume
+        source: unity
+        target: /root/.local/share/unity3d/Unity
+        volume:
+          nocopy: true
+
+volumes:
+  unity:
+    driver_opts:
+      type: "nfs"
+      o: "addr=nas.mgame.cn,nolock,soft,rw"
+      device: ":/volume1/unity"
