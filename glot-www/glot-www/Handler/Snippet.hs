@@ -92,9 +92,10 @@ ensureSnippetOwner :: Maybe UserId -> CodeSnippet -> Handler ()
 ensureSnippetOwner maybeUserId CodeSnippet{..} =
     case (maybeUserId, codeSnippetUserId) of
         (Just userId, Just snippetUserId) ->
-            if userId == snippetUserId || isNothing (snippetUserId) then
+            if userId == snippetUserId then
                 pure ()
-
+            else if isNothing (snippetUserId) then
+                pure ()
             else
                 sendResponseStatus status403 $
                     object [ "error" .= ("You are not the owner of this snippet" :: Text) ]
