@@ -7,7 +7,7 @@
         var version = Meta.getLanguageVersion();
         var url = "@?{(RunR lang, [("snippet", slug)])}" + "&" + $.param({version: version, persist: false});
 
-        var lang = e.attr("lang");
+        var lang = e.currentTarget.lang;
         if (lang) {
             url = url.replace(/\/run\/\w+/g, '/run/' + lang)
         }
