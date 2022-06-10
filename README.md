@@ -16,7 +16,17 @@ docker-compose up -d
 ```
 
 ## 构建glot/huatuo镜像
-### 可以选择在docker下打包，参考[unity-build-in-docker](unity-build-in-docker)
+### 可以选择在docker下打包，参考[unity-build-in-docker](unity-build-in-docker/docker-compose.yml)
+```
+# 挂在存放unity证书的目录，推荐使用nas存储，这样可以多台机器使用同个证书
+# 证书文件名Unity_lic.ulf
+volumes:
+  unity:
+    driver_opts:
+      type: "nfs"
+      o: "addr=nas.mgame.cn,nolock,soft,rw"
+      device: ":/volume1/unity"
+```
 
 1. 拷贝[TestDriver](TestDriver.cs) 和 [CommandLine](CommandLine.dll)到unity工程
 2. 打包
