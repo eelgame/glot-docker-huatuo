@@ -4,6 +4,7 @@
 
 ## 部署脚本
 ```
+# 在能够翻墙的环境下运行
 chmod +x glot-www/glot-www/*.sh
 
 docker run --volume $(pwd)/glot-www/glot-www:/build --rm prasmussen/glot-www-build:latest
