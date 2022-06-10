@@ -2,7 +2,7 @@ version: '3'
 services:
   build-glot:
     build: .
-    command: -executeMethod HuaTuo.Editor.Tools.BuildForGlot
+    command: -executeMethod HuaTuo.Editor.HuaTuoEditorHelper.BuildForGlot
     working_dir: /w
     volumes:
       - .:/w
