@@ -7,7 +7,8 @@ $newline never
         <button class="btn btn-primary item run"><i class="fa fa-play"></i> Run
 
         $if (languageName lang) == "C#"
-          <button class="btn btn-primary item run-huatuo"><i class="fa fa-play"></i> Run Huatuo
+          <button class="btn btn-primary item run" lang="huatuo"><i class="fa fa-play"></i> Huatuo修改版
+          <button class="btn btn-primary item run" lang="huatuofocus"><i class="fa fa-play"></i> Huatuo官方版
 
         <div class="btn-group item" data-toggle="buttons">
           $if hasRunResult
