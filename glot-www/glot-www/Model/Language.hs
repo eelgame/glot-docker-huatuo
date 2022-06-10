@@ -75,6 +75,7 @@ instance Show Language where
     show Crystal = "crystal"
     show Csharp = "csharp"
     show Huatuo = "huatuo"
+    show HuatuoFocus = "huatuofocus"
     show D = "d"
     show Elixir = "elixir"
     show Elm = "elm"
