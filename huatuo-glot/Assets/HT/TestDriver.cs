@@ -68,6 +68,7 @@ public class TestDriver : MonoBehaviour
             }
             catch (Exception e)
             {
+                Console.Error.WriteLine(e);
                 Application.Quit(1);
             }
     }
