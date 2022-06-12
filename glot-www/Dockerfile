@@ -1,6 +1,5 @@
-FROM ubuntu:20.04
+FROM registry.cn-chengdu.aliyuncs.com/mgame/ubuntu-glot-haskellstack
 
-RUN apt update && apt install -y libpq-dev && apt install -y ca-certificates
 ADD glot-www/release/glot-www.tar.gz /
 
 WORKDIR /glot-www

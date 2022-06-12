@@ -1,15 +1,5 @@
-FROM ubuntu:20.04
-# MAINTAINER Petter Rasmussen "petter.rasmussen@gmail.com"
-#
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y postgresql-server-dev-all \
-    && apt-get install --no-install-recommends --no-install-suggests -y curl ca-certificates \
-    && apt-get install -y libpq-dev \
-    && apt-get install -y zlib1g-dev libtinfo-dev \
-    && curl -sSL https://get.haskellstack.org/ | sh
+FROM registry.cn-chengdu.aliyuncs.com/mgame/ubuntu-glot-haskellstack
 
-# Set locale
-ENV LANG C.UTF-8
 #
 RUN mkdir /build
 VOLUME ["/build"]
