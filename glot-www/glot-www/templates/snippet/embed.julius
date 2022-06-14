@@ -18,7 +18,7 @@
             command: Meta.getRunCommand(),
             run_command: $(this).attr('run_command')
         };
-        const filterStdoutEnabled = Meta.filterStdoutEnabled();
+        const filterStdoutEnabled = window.Meta.filterStdoutEnabled();
         XHR.jsonPost(url, payload).done(function(data) {
             if (filterStdoutEnabled)
             {
