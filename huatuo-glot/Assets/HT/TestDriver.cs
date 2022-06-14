@@ -34,6 +34,8 @@ public class TestDriver : MonoBehaviour
         try
         {
             Console.WriteLine(
+                "################ignore the above output################");
+            Console.WriteLine(
                 "========================================================================");
             if (commandLineArgs.Remove("--glot"))
                 Parser.Default.ParseArguments<Options>(commandLineArgs)
@@ -94,7 +96,7 @@ public class TestDriver : MonoBehaviour
                     });
 
             Console.WriteLine(
-                "========================================================================");
+                "end========================================================================");
             Application.Quit(0);
         }
         catch (Exception e)
