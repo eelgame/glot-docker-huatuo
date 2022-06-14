@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using CommandLine;
 using UnityEngine;
+using AppDomain = ILRuntime.Runtime.Enviorment.AppDomain;
 
 public class Options
 {
@@ -29,10 +30,11 @@ public class TestDriver : MonoBehaviour
     {
         var commandLineArgs = new List<string>(Environment.GetCommandLineArgs());
         if (commandLineArgs.Count > 0) commandLineArgs.RemoveAt(0);
-
-        if (commandLineArgs.Remove("--glot"))
-            try
-            {
+        try
+        {
+            Console.WriteLine(
+                "========================================================================");
+            if (commandLineArgs.Remove("--glot"))
                 Parser.Default.ParseArguments<Options>(commandLineArgs)
                     .WithParsed(o =>
                     {
@@ -47,8 +49,6 @@ public class TestDriver : MonoBehaviour
                                 BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                             if (m != null)
                             {
-                                Console.WriteLine(
-                                    "========================================================================");
                                 var parameterInfos = m.GetParameters();
                                 object result = null;
                                 if (parameterInfos.Length == 0)
@@ -56,20 +56,50 @@ public class TestDriver : MonoBehaviour
                                 else if (parameterInfos.Length == 1 &&
                                          parameterInfos[0].ParameterType == typeof(string[]))
                                     result = m.Invoke(null, new object[] { Array.Empty<string>() });
-                                Console.WriteLine(
-                                    "========================================================================");
-                                Console.WriteLine($"result: {result}");
 
+                                Console.WriteLine($"result: {result}");
                                 break;
                             }
                         }
                     });
-                Application.Quit(0);
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine(e);
-                Application.Quit(1);
-            }
+            else if (commandLineArgs.Remove("--ilruntime"))
+                Parser.Default.ParseArguments<Options>(commandLineArgs)
+                    .WithParsed(o =>
+                    {
+                        var appDomain = new AppDomain();
+                        using var stream = File.Open(o.assembly, FileMode.Open);
+                        appDomain.LoadAssembly(stream);
+                        object result = null;
+
+                        foreach (var kvp in appDomain.LoadedTypes)
+                        {
+                            var m = kvp.Value.GetMethod("Main", 0);
+                            if (m.IsStatic)
+                            {
+                                result = appDomain.Invoke(m, null);
+                                break;
+                            }
+
+                            m = kvp.Value.GetMethod("Main", 1);
+                            if (m.IsStatic)
+                                if (m.Parameters[0] == appDomain.GetType(typeof(string[])))
+                                {
+                                    result = appDomain.Invoke(m, null, new object[] { Array.Empty<string>() });
+                                    break;
+                                }
+                        }
+
+                        Console.WriteLine($"result: {result}");
+                    });
+
+            Console.WriteLine(
+                "========================================================================");
+            Application.Quit(0);
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine(e);
+            Application.Quit(1);
+        }
     }
 }
