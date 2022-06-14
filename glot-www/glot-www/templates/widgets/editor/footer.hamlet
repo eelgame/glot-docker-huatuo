@@ -9,7 +9,7 @@ $newline never
         $if (languageName lang) == "C#"
           <button class="btn btn-primary item run" lang="huatuo"><i class="fa fa-play"></i> Huatuo修改版
           <button class="btn btn-primary item run" lang="huatuofocus"><i class="fa fa-play"></i> Huatuo官方版
-
+          <button class="btn btn-primary item run" lang="huatuofocus" run_command="/Builds/huatuo --ilruntime -a a.exe"><i class="fa fa-play"></i> ILRuntime
           <button class="btn btn-primary item run" lang="csharp" run_command="pwd"><i class="fa fa-play"></i> 测试
 
         <div class="btn-group item" data-toggle="buttons">
