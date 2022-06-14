@@ -85,11 +85,10 @@ public class TestDriver : MonoBehaviour
 
                             m = kvp.Value.GetMethod("Main", 1);
                             if (m is { IsStatic: true })
-                                if (m.Parameters[0] == appDomain.GetType(typeof(string[])))
-                                {
-                                    result = appDomain.Invoke(m, null, new object[] { Array.Empty<string>() });
-                                    break;
-                                }
+                            {
+                                result = appDomain.Invoke(m, null, new object[] { null });
+                                break;
+                            }
                         }
 
                         Console.WriteLine($"result: {result}");
