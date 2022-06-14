@@ -16,7 +16,7 @@
         var version = Meta.getLanguageVersion();
         var url = "@?{(RunR lang, [("snippet", slug)])}" + "&" + $.param({version: version});
 
-        var lang = e.currentTarget.lang;
+        var lang = $(this).attr('lang');
         if (lang) {
             url = url.replace(/\/run\/\w+/g, '/run/' + lang)
         }
@@ -25,7 +25,7 @@
             files: Editor.getFiles(),
             stdin: EditorFooter.getStdin(),
             command: Meta.getRunCommand(),
-            run_command: e.currentTarget.run_command
+            run_command: $(this).attr('run_command')
         };
 
         XHR.jsonPost(url, payload).done(function(data) {
