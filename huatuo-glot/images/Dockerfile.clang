@@ -1,0 +1,4 @@
+FROM glot/clang@sha256:2c37902803c5fbc8824d532294c8e9669659bb7b564084a0e50f8d1df844375f
+
+ADD code-runner_linux-x64.tar.gz /
+

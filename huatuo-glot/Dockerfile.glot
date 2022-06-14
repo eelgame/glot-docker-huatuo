@@ -7,6 +7,6 @@ RUN useradd -d /home/glot -g glot -s /bin/bash glot
 ADD Glot-Linux /Builds
 RUN chmod +x /Builds/huatuo
 
-ADD code-runner_linux-x64.tar.gz /
+ADD images/code-runner_linux-x64.tar.gz /
 
 CMD [ "/code-runner", "--path", "/home/glot" ]
