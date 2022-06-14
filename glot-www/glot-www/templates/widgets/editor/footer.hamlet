@@ -7,8 +7,11 @@ $newline never
         <button class="btn btn-primary item run"><i class="fa fa-play"></i> Run
 
         $if (languageName lang) == "C#"
-          <input type="checkbox" id="filter-stdout" checked>
-          <label for="filter-stdout">过滤stdout</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" id="filter-stdout" checked> 过滤stdout
+            </label>
+          </div>
           <button class="btn btn-primary item run" lang="huatuo"><i class="fa fa-play"></i> Huatuo修改版
           <button class="btn btn-primary item run" lang="huatuofocus"><i class="fa fa-play"></i> Huatuo官方版
           <button class="btn btn-primary item run" lang="huatuofocus" run_command="/Builds/huatuo --ilruntime -a a.exe"><i class="fa fa-play"></i> ILRuntime
