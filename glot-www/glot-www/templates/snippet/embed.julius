@@ -16,6 +16,7 @@
             files: Editor.getFiles(),
             stdin: "",
             command: Meta.getRunCommand(),
+            run_command: e.currentTarget.run_command
         };
 
         XHR.jsonPost(url, payload).done(function(data) {

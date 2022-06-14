@@ -42,6 +42,7 @@ data RunRequestPayload = RunRequestPayload
     , files :: NonEmpty.NonEmpty Snippet.FilePayload
     , stdin :: Maybe Text
     , command :: Maybe Text
+    , run_command :: Maybe Text
     }
     deriving (Show, GHC.Generic)
 
