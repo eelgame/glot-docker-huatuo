@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using CommandLine;
 using UnityEngine;
@@ -71,7 +72,7 @@ public class TestDriver : MonoBehaviour
                         appDomain.LoadAssembly(stream);
                         object result = null;
 
-                        foreach (var kvp in appDomain.LoadedTypes)
+                        foreach (var kvp in appDomain.LoadedTypes.ToList())
                         {
                             var m = kvp.Value.GetMethod("Main", 0);
                             if (m is { IsStatic: true })
