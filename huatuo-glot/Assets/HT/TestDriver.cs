@@ -74,14 +74,14 @@ public class TestDriver : MonoBehaviour
                         foreach (var kvp in appDomain.LoadedTypes)
                         {
                             var m = kvp.Value.GetMethod("Main", 0);
-                            if (m.IsStatic)
+                            if (m is { IsStatic: true })
                             {
                                 result = appDomain.Invoke(m, null);
                                 break;
                             }
 
                             m = kvp.Value.GetMethod("Main", 1);
-                            if (m.IsStatic)
+                            if (m is { IsStatic: true })
                                 if (m.Parameters[0] == appDomain.GetType(typeof(string[])))
                                 {
                                     result = appDomain.Invoke(m, null, new object[] { Array.Empty<string>() });
