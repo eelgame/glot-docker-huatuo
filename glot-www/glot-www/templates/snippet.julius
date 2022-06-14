@@ -27,13 +27,8 @@
             command: Meta.getRunCommand(),
             run_command: $(this).attr('run_command')
         };
-        const filterStdoutEnabled = window.Meta.filterStdoutEnabled();
         XHR.jsonPost(url, payload).done(function(data) {
-            if (filterStdoutEnabled)
-            {
-                const regex = /(.*\n)*################ignore the above output################/gm;
-                data.stdout = data.stdout.replace(regex, "");
-            }
+            data = Meta.filterStdout(data);
             EditorFooter.show(data);
         }).fail(function(xhr) {
             Alert.danger(xhr.responseJSON.message);

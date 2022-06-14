@@ -16,6 +16,14 @@ window.Meta = (function() {
         return $("#filter-stdout").is(":checked");
     }
 
+    function filterStdout(data) {
+        if (filterStdoutEnabled()) {
+            const regex = /(.*\n)*################ignore the above output################(\n)*/gm;
+            data.stdout = data.stdout.replace(regex, "");
+        }
+        return data;
+    }
+
     function getLanguageVersion() {
         return $("#lang-version").val();
     }
@@ -28,6 +36,7 @@ window.Meta = (function() {
         getRunCommand: getRunCommand,
         getLanguageVersion: getLanguageVersion,
         filterStdoutEnabled: filterStdoutEnabled,
+        filterStdout: filterStdout,
         isPublic: isPublic,
     };
 })();
