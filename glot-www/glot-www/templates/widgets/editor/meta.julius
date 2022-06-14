@@ -27,7 +27,7 @@ window.Meta = (function() {
     return {
         getRunCommand: getRunCommand,
         getLanguageVersion: getLanguageVersion,
-        filterStdoutEnable: filterStdoutEnabled,
+        filterStdoutEnabled: filterStdoutEnabled,
         isPublic: isPublic,
     };
 })();
