@@ -96,7 +96,7 @@ public class TestDriver : MonoBehaviour
                     });
 
             Console.WriteLine(
-                "end========================================================================");
+                "========================================================================");
             Application.Quit(0);
         }
         catch (Exception e)
