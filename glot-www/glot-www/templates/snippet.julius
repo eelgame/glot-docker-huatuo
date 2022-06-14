@@ -29,8 +29,11 @@
         };
 
         XHR.jsonPost(url, payload).done(function(data) {
-            const regex = /(.*\n)*################ignore the above output################/gm;
-            data.stdout = data.stdout.replace(regex, "");
+            if (Meta.filterStdoutEnabled())
+            {
+                const regex = /(.*\n)*################ignore the above output################/gm;
+                data.stdout = data.stdout.replace(regex, "");
+            }
             EditorFooter.show(data);
         }).fail(function(xhr) {
             Alert.danger(xhr.responseJSON.message);

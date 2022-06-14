@@ -12,6 +12,10 @@ window.Meta = (function() {
         return $("#cmd-checkbox").is(":checked");
     }
 
+    function filterStdoutEnabled() {
+        return $("#filter-stdout").is(":checked");
+    }
+
     function getLanguageVersion() {
         return $("#lang-version").val();
     }
