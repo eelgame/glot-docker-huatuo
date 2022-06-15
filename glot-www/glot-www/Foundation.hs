@@ -80,6 +80,10 @@ instance Yesod App where
 
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR lib_font_awesome_css_font_awesome_min_css
+            addStylesheet $ StaticR lib_amis_sdk_css
+            addStylesheet $ StaticR lib_amis_helper_css
+            addStylesheet $ StaticR lib_amis_iconfont_css
+            addScript $ StaticR lib_amis_sdk_js
             $(combineStylesheets 'StaticR [
                 lib_bootstrap_bootstrap_min_css,
                 css_glot_css])
