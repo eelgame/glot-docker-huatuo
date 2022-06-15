@@ -99,6 +99,15 @@ if (document.getElementById("more-actions")) {
        "body": {
           "type": "button-group",
           "buttons": [
+            {
+                "type": "button",
+                "label": "amis",
+                "visibleOn": '#{toJSON $ show lang} == "javascript"',
+                onClick: (e, props) => {
+                    const files = Editor.getFiles();
+                    amis.embed('#amis_root', JSON.parse(files[0].coutent));
+                }
+            },
             Object.assign({}, item, {
               "label": "il",
               "data": {

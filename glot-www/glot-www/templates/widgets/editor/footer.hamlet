@@ -1,6 +1,7 @@
 $newline never
 
 <div id="more-actions"></div>
+<div id="amis_root"></div>
 <div class="editor-footer">
   <div class="panel panel-default">
     <div class="panel-heading">
