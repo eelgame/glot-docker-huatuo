@@ -27,7 +27,8 @@
             files: Editor.getFiles(),
             stdin: EditorFooter.getStdin(),
             command: Meta.getRunCommand(),
-            run_command: $(this).attr('run_command')
+            run_command: $(this).attr('run_command'),
+            compile_command: $(this).attr('compile_command'),
         };
 
         XHR.jsonPost(url, payload).done(function(data) {

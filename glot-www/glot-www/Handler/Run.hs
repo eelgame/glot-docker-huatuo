@@ -19,6 +19,7 @@ data RunPayload = RunPayload
     , stdin :: Maybe Text
     , command :: Maybe Text
     , run_command :: Maybe Text
+    , compile_command :: Maybe Text
     }
     deriving (Show, GHC.Generic)
 
