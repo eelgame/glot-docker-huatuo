@@ -105,7 +105,15 @@ if (document.getElementById("more-actions")) {
                  run_command: "monodis a.exe",
                  lang: "huatuofocus"
               },
-            })
+            }),
+            Object.assign({}, item, {
+              "label": "il",
+              "data": {
+                 compile_command: "mcs -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./a.exe --assembly=/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll",
+                 run_command: "cat output/CSharp/a.cpp output/CSharp/a_CodeGen.c",
+                 lang: "huatuofocus"
+              },
+            }),
           ]
        }
     });
