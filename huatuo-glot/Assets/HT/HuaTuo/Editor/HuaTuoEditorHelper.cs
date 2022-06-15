@@ -31,7 +31,13 @@ namespace HuaTuo.Editor
 #if UNITY_EDITOR_LINUX
             buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
             buildPlayerOptions.locationPathName = "Glot-Linux/huatuo";
+            
+            new NPath(EditorApplication.applicationContentsPath).Combine("il2cpp").CopyFiles("il2cpp_env/il2cpp", true);
+            new NPath(EditorApplication.applicationContentsPath).Combine("MonoBleedingEdge").CopyFiles("il2cpp_env/MonoBleedingEdge", true);
+            new NPath(EditorApplication.applicationContentsPath).Combine("PlaybackEngines/LinuxStandaloneSupport/Variations/linux64_headless_nondevelopment_il2cpp/baselib.a").Copy("il2cpp_env/");
 #endif
+
+            
             var buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             if (buildReport.summary.result == BuildResult.Succeeded)
             {
