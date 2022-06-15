@@ -5,8 +5,9 @@ RUN apt install -y clang
 
 RUN groupadd glot
 RUN useradd -d /home/glot -g glot -s /bin/bash glot
-USER glot
 
+RUN mkdir /Builds && chmod 777 /Builds
+USER glot
 ADD Glot-Linux /Builds
 RUN chmod +x /Builds/huatuo
 
