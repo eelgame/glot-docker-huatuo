@@ -65,7 +65,7 @@ if (document.getElementById("more-actions")) {
                    lang: "huatuofocus"
                 },
                 "label": "测试",
-                "visibleOn": "#{toJSON $ show lang} == 'csharp'",
+                "visibleOn": '#{toJSON $ show lang} == "csharp"',
                 onClick: (e, props) => {
                     EditorFooter.showOutputTab(true);
                     EditorFooter.clear();
