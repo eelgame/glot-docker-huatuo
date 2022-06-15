@@ -76,7 +76,7 @@ if (document.getElementById("more-actions")) {
         };
 
         XHR.jsonPost(url, payload).done(function(data) {
-            data = Meta.filterStdout(data);
+            // data = Meta.filterStdout(data);
             EditorFooter.show(data);
         }).fail(function(xhr) {
             Alert.danger(xhr.responseJSON.message);
