@@ -6,7 +6,7 @@ $newline never
     <div class="col-sm-12">
       <p class="text-center languages-prompt">Choose a programming langauge you want to learn:
 
-    <div class="col-lg-12 languages">
+    <div class=" languages">
       $forall language <- languages
         $if length (Language.books language) > 0
           <a href="@{LearnLanguageR (Language.identifier language)}">

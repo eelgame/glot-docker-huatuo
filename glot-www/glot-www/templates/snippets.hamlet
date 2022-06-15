@@ -3,7 +3,7 @@ $newline never
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-12">
+    <div class="">
       <h3>Public Snippets
       $if null entries
         <p>No snippets found
