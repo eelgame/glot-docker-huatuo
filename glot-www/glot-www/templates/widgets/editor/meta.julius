@@ -51,56 +51,61 @@ window.Meta = (function() {
 })();
 
 if (document.getElementById("more-actions")) {
+    
+    function Run (e, props) {
+        EditorFooter.showOutputTab(true);
+        EditorFooter.clear();
+        EditorFooter.showInfo("Running...");
+
+        var version = Meta.getLanguageVersion();
+        var url = "@{RunR lang}" + "?" + $.param({version: version});
+
+        console.log(e);
+        
+        var lang = props.defaultData.lang;
+        if (lang) {
+            url = url.replace(/\/run\/\w+/g, '/run/' + lang)
+        }
+
+        var payload = {
+            files: Editor.getFiles(),
+            stdin: EditorFooter.getStdin(),
+            command: Meta.getRunCommand(),
+            run_command: props.defaultData.run_command,
+            compile_command: props.defaultData.compile_command,
+        };
+
+        XHR.jsonPost(url, payload).done(function(data) {
+            data = Meta.filterStdout(data);
+            EditorFooter.show(data);
+        }).fail(function(xhr) {
+            Alert.danger(xhr.responseJSON.message);
+        }).always(function() {
+            EditorFooter.hideInfo();
+        });
+    }
+
+    const item = {
+        "type": "button",
+        "label": "测试",
+        "visibleOn": '#{toJSON $ show lang} == "csharp"',
+        onClick: Run 
+    };
+
     let amis = amisRequire('amis/embed');
     let amisLib = amisRequire('amis');
     let amisScoped = amis.embed('#more-actions', {
        "type": "page",
        "body": {
           "type": "button-group",
-          "buttons": [{
-                "type": "button",
-                "data": {
-                   run_command: "pwd",
-                   compile_command: "echo 'test'",
-                   lang: "huatuofocus"
-                },
-                "label": "测试",
-                "visibleOn": '#{toJSON $ show lang} == "csharp"',
-                onClick: (e, props) => {
-                    EditorFooter.showOutputTab(true);
-                    EditorFooter.clear();
-                    EditorFooter.showInfo("Running...");
-
-                    var version = Meta.getLanguageVersion();
-                    var url = "@{RunR lang}" + "?" + $.param({version: version});
-
-                    console.log(e);
-                    
-                    var lang = props.defaultData.lang;
-                    if (lang) {
-                        url = url.replace(/\/run\/\w+/g, '/run/' + lang)
-                    }
-
-                    var payload = {
-                        files: Editor.getFiles(),
-                        stdin: EditorFooter.getStdin(),
-                        command: Meta.getRunCommand(),
-                        run_command: props.defaultData.run_command,
-                        compile_command: props.defaultData.compile_command,
-                    };
-
-                    XHR.jsonPost(url, payload).done(function(data) {
-                        data = Meta.filterStdout(data);
-                        EditorFooter.show(data);
-                    }).fail(function(xhr) {
-                        Alert.danger(xhr.responseJSON.message);
-                    }).always(function() {
-                        EditorFooter.hideInfo();
-                    });
-                }
-             }
+          "buttons": [
+            Object.assign({}, item, {
+              "data": {
+                 run_command: "monodis a.exe",
+                 lang: "huatuofocus"
+              },
+            })
           ]
        }
     });
 }
-
