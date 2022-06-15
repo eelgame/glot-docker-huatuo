@@ -1,6 +1,8 @@
 # docker build -f Dockerfile.glot -t glot/huatuo .
 FROM registry.cn-chengdu.aliyuncs.com/mgame/ubuntu-mono
 
+RUN apt install -y clang
+
 RUN groupadd glot
 RUN useradd -d /home/glot -g glot -s /bin/bash glot
 
