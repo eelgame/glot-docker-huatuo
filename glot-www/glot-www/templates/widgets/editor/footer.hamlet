@@ -15,14 +15,11 @@ $newline never
           <button class="btn btn-primary item run" lang="huatuofocus" run_command="/Builds/huatuo --ilruntime -a a.exe"><i class="fa fa-play"></i> ILRuntime
           <button class="btn btn-primary item run" lang="huatuofocus" run_command="mono --interpreter a.exe"><i class="fa fa-play"></i> mono interpreter
           <button class="btn btn-primary item run" lang="huatuofocus" compile_command="mcs -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --compile-cpp --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./a.exe --assembly=/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll --outputpath=./output/a.exe" run_command="output/a.exe"><i class="fa fa-play"></i> il2cpp aot
-          <div class="btn-group item">
+          <div class="dropdown">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-play"></i> More Run <span class="caret"></span>
-            <ul class="dropdown-menu">
-              <li class="dropdown-header">Save Snippet
-              <li>
-                <button class="btn btn-primary item run" lang="huatuofocus" run_command="monodis a.exe"><i class="fa fa-play"></i> il
-              <li>
-                <button class="btn btn-primary item run" lang="huatuofocus" compile_command="pwd" run_command="echo 'test'"><i class="fa fa-play"></i> 测试
+            <div class="dropdown-menu">
+                <button class="dropdown-item run" type="button" lang="huatuofocus" run_command="monodis a.exe"> il
+                <button class="dropdown-item run" type="button" lang="huatuofocus" compile_command="pwd" run_command="echo 'test'"> 测试
 
         <div class="btn-group item" data-toggle="buttons">
           $if hasRunResult
