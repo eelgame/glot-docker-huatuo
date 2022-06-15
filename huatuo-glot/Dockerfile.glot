@@ -17,7 +17,7 @@ WORKDIR /home/glot
 ADD Main.cs ./
 # mcs -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/UnityLinker --out=./output/CSharp-stripped --i18n=none --core-action=link --include-assembly=./a.exe,/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll --dotnetruntime=il2cpp --dotnetprofile=unityaot --use-editor-options && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --compile-cpp --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./output/CSharp-stripped/a.exe --outputpath=./output/a.exe
 RUN mcs -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --compile-cpp --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./a.exe --assembly=/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll --outputpath=./tmp/a.exe
-RUN rm -rf ./output/a.exe 
-RUN rm -rf a.exe
+
+RUN rm -rf a.exe Main.cs
 
 CMD [ "/code-runner", "--path", "/home/glot" ]
