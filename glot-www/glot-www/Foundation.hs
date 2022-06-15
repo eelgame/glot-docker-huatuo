@@ -82,12 +82,8 @@ instance Yesod App where
             addStylesheet $ StaticR lib_font_awesome_css_font_awesome_min_css
             $(combineStylesheets 'StaticR [
                 lib_bootstrap_bootstrap_min_css,
-                lib_amis_sdk_css,
-                lib_amis_helper_css,
-                lib_amis_iconfont_css,
                 css_glot_css])
             $(combineScripts 'StaticR [
-                lib_amis_sdk_js,
                 lib_jquery_jquery_min_js,
                 lib_moment_moment_min_js,
                 lib_bootstrap_bootstrap_min_js,
