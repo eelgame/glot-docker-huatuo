@@ -100,6 +100,7 @@ if (document.getElementById("more-actions")) {
           "type": "button-group",
           "buttons": [
             Object.assign({}, item, {
+              "label": "il",
               "data": {
                  run_command: "monodis a.exe",
                  lang: "huatuofocus"
