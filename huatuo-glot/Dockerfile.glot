@@ -7,10 +7,10 @@ RUN groupadd glot
 RUN useradd -d /home/glot -g glot -s /bin/bash glot
 
 RUN mkdir /Builds && chmod 777 /Builds
-USER glot
 ADD Glot-Linux /Builds
+USER root
 RUN chmod +x /Builds/huatuo
-
+USER glot
 ADD il2cpp_env /il2cpp_env
 
 ADD images/code-runner_linux-x64.tar.gz /
