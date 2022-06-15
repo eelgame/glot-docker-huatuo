@@ -1,3 +1,7 @@
 .container {
     width: 1400px;
 }
+
+html {
+    font-size: unset;
+}
