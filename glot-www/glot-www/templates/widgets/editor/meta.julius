@@ -52,7 +52,7 @@ window.Meta = (function() {
 
 if (document.getElementById("more-actions")) {
     
-    function Run (e, props) {
+    function Run (e, runData) {
         EditorFooter.showOutputTab(true);
         EditorFooter.clear();
         EditorFooter.showInfo("Running...");
@@ -62,7 +62,7 @@ if (document.getElementById("more-actions")) {
 
         console.log(e);
         
-        var lang = props.defaultData.lang;
+        var lang = runData.lang;
         if (lang) {
             url = url.replace(/\/run\/\w+/g, '/run/' + lang)
         }
@@ -71,8 +71,8 @@ if (document.getElementById("more-actions")) {
             files: Editor.getFiles(),
             stdin: EditorFooter.getStdin(),
             command: Meta.getRunCommand(),
-            run_command: props.defaultData.run_command,
-            compile_command: props.defaultData.compile_command,
+            run_command: runData.run_command,
+            compile_command: runData.compile_command,
         };
 
         XHR.jsonPost(url, payload).done(function(data) {
@@ -85,20 +85,47 @@ if (document.getElementById("more-actions")) {
         });
     }
 
-    const item = {
-        "type": "button",
-        "label": "测试",
-        "visibleOn": '#{toJSON $ show lang} == "csharp"',
-        onClick: Run 
-    };
-
     let amis = amisRequire('amis/embed');
     let amisLib = amisRequire('amis');
-    let amisScoped = amis.embed('#more-actions', {
-       "type": "page",
-       "body": {
-          "type": "button-group",
-          "buttons": [
+
+    let amisJSON = {
+        "type": "page",
+        "body": {
+            "type": "form",
+            "title": "",
+            "body": [{
+                "name": "compile_command",
+                "type": "input-text",
+                "label": "编译命令",
+                "clearable": true,
+                "options": [{
+                    "label": "mcs",
+                    "value": "mcs -unsafe -out:a.exe *.cs"
+                },
+                {
+                    "label": "mcs&il2cpp",
+                    "value": "mcs -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --compile-cpp --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./a.exe --assembly=/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll --outputpath=./output/a.exe"
+                }]
+            },
+            {
+                "name": "run_command",
+                "type": "input-text",
+                "label": "运行命令",
+                "clearable": true,
+                "options": [{
+                    "label": "mono",
+                    "value": "mono a.exe"
+                },
+                {
+                    "label": "mono interpreter",
+                    "value": "mono --interpreter a.exe"
+                },
+                {
+                    "label": "il2cpp",
+                    "value": "output/a.exe"
+                }]
+            }],
+            "actions": [
             {
                 "type": "button",
                 "label": "amis",
@@ -109,22 +136,27 @@ if (document.getElementById("more-actions")) {
                     amis.embed('#amis_root', func());
                 }
             },
-            Object.assign({}, item, {
-              "label": "il",
-              "data": {
-                 run_command: "monodis a.exe",
-                 lang: "huatuofocus"
-              },
-            }),
-            Object.assign({}, item, {
-              "label": "cpp",
-              "data": {
-                 compile_command: "mcs -debug -unsafe -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll -r:/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/System.Core.dll -nostdlib -noconfig -out:a.exe *.cs && /il2cpp_env/il2cpp/build/deploy/netcoreapp3.1/il2cpp --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile='unityaot' --libil2cpp-static --platform='Linux' --architecture='x64' --configuration='Release' --baselib-directory=/il2cpp_env --generatedcppdir=./output/CSharp --cachedirectory=./output/cache --assembly=./a.exe --assembly=/il2cpp_env/MonoBleedingEdge/lib/mono/unityaot/mscorlib.dll",
-                 run_command: "cat output/CSharp/a.cpp output/CSharp/a_CodeGen.c",
-                 lang: "huatuofocus"
-              },
-            }),
-          ]
-       }
-    });
+            {
+                "type": "button",
+                "label": "il",
+                "level": "light",
+                "visibleOn": '#{toJSON $ show lang} == "csharp"',
+                "onClick": (e, props) => { Run(props.defaultData); },
+            },
+            {
+                "type": "button",
+                "label": "cpp",
+                "level": "light",
+                "onClick": (e, props) => { Run(props.defaultData); },
+            },
+            {
+                "type": "button",
+                "label": "运行",
+                "level": "primary",
+                "onClick": (e, props) => { Run(props.data); },
+            }]
+        }
+    };
+
+    let amisScoped = amis.embed('#more-actions', amisJSON);
 }
