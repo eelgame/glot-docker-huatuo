@@ -60,8 +60,6 @@ if (document.getElementById("more-actions")) {
         var version = Meta.getLanguageVersion();
         var url = "@{RunR lang}" + "?" + $.param({version: version});
 
-        console.log(e);
-        
         var lang = runData.lang;
         if (lang) {
             url = url.replace(/\/run\/\w+/g, '/run/' + lang)
