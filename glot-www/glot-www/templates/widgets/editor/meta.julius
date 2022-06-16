@@ -156,6 +156,7 @@ if (document.getElementById("more-actions")) {
                     run_command: "cat output/CSharp/a.cpp output/CSharp/a_CodeGen.c",
                     lang: "huatuofocus"
                 },
+                "visibleOn": '#{toJSON $ show lang} == "csharp"',
                 "onClick": (e, props) => { Run(props.defaultData); },
             },
             {
