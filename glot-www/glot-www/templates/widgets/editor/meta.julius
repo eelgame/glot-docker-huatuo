@@ -105,7 +105,8 @@ if (document.getElementById("more-actions")) {
                 "visibleOn": '#{toJSON $ show lang} == "javascript"',
                 onClick: (e, props) => {
                     const files = Editor.getFiles();
-                    amis.embed('#amis_root', JSON.parse(files[0].content));
+                    const func = Function(files[0].content);
+                    amis.embed('#amis_root', func());
                 }
             },
             Object.assign({}, item, {
