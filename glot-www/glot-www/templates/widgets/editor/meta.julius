@@ -136,6 +136,17 @@ if (document.getElementById("more-actions")) {
             },
             {
                 "type": "button",
+                "label": "dll->il->dll",
+                "level": "light",
+                "data": {
+                    run_command: "monodis a.exe > a.il && ilasm /output:a.il.exe a.il && mono ./a.il.exe",
+                    lang: "huatuofocus"
+                },
+                "visibleOn": '#{toJSON $ show lang} == "csharp"',
+                "onClick": (e, props) => { Run(props.defaultData); },
+            },
+            {
+                "type": "button",
                 "label": "il",
                 "level": "light",
                 "data": {
