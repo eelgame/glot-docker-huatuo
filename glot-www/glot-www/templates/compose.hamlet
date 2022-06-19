@@ -7,5 +7,6 @@ $newline never
       <div class="snippet-header">
         <div class="snippet-header-title">
           <h2 id="snippet-title" contenteditable>#{Snippet.title snippet}
+          <div id="snippet-header-amis" style="width: 50%;display: inline-flex;">
       ^{editorWidget True lang snippet files Nothing Nothing}
       ^{footerWidget True (languageIsRunnable lang) False Nothing Nothing lang}
