@@ -34,7 +34,7 @@ window.Editor = (function() {
                 ]
               }
             });
-
+            
             Object.defineProperty(amisScoped, "editor", { get: function () { return amisScoped.getComponentByName('page.form.code'); } });
 
             amisScoped.getValue = function () {
@@ -44,7 +44,7 @@ window.Editor = (function() {
             amisScoped.setValue = function (value) {
                 amisScoped.editor.props.value = value;
             }
-
+            amisScoped.dirty = false;
             editors[id] = amisScoped;
             return;
         }
