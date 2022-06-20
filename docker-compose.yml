@@ -32,6 +32,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: glot
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   run:
     build: ./docker-run
     ports:
@@ -66,3 +68,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   # csharp:
   #   image: 'glot/csharp:latest'
+
+volumes:
+  pgdata:
