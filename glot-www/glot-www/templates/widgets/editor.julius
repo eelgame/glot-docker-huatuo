@@ -11,8 +11,9 @@ window.Editor = (function() {
             if (editors[id]) return;
             let amis = amisRequire('amis/embed');
             let amisLib = amisRequire('amis');
-
-            let amisScoped = amis.embed(document.getElementById(id), {
+            let node = document.getElementById(id);
+            let code = node.textContent;
+            let amisScoped = amis.embed(node, {
               "type": "page",
               "name": "page",
               "body": {
@@ -25,22 +26,24 @@ window.Editor = (function() {
                     "type": "editor",
                     "name": "code",
                     "label": "",
+                    "value": code || "",
                     "language": #{toJSON $ languageMonacoMode lang},
                     "editorTheme": "vs-dark",
-                    "editorDidMount": (editor, monaco) => {
-                        // monaco.editor.setTheme("vs-dark");
-                        console.log(this);
-                        console.log(#{toJSON $ languageDefaultContent lang});
-                    }
                   }
                 ]
               }
             });
 
             Object.defineProperty(amisScoped, "editor", { get: function () { return amisScoped.getComponentByName('page.form.code'); } });
+
             amisScoped.getValue = function () {
                 return amisScoped.editor.props.value
             }
+
+            amisScoped.setValue = function (value) {
+                amisScoped.editor.props.value = value;
+            }
+
             editors[id] = amisScoped;
             return;
         }
@@ -128,13 +131,14 @@ window.Editor = (function() {
     }
 
     function resetEditor(id) {
-        if (useMonaco()) editors[id].editor.props.setValue('');
+        if (useMonaco()) {editors[id].editor.props.setValue('');return;}
         var editor = ace.edit(id);
         editor.setValue("");
         
     }
 
     function setFiles(files) {
+        console.log(files);
         files.forEach(function(file, i) {
             var editorId = "editor-" + (i + 1);
             initEditor(editorId);
@@ -216,7 +220,7 @@ window.Editor = (function() {
         var files = editorIds.map(function(id) {
             return {
                 name: getFilename(id),
-                content: getContent(id),
+                content: getContent(id) || "",
             };
         });
 
@@ -234,7 +238,7 @@ window.Editor = (function() {
 
     function getContent(editorId) {
         var editor = getEditor(editorId);
-        return editor.getValue();
+        return editor && editor.getValue();
     }
 
     function getFilename(editorId) {
@@ -244,7 +248,6 @@ window.Editor = (function() {
 
     function getEditor(editorId) {
         if (useMonaco()) {
-            initEditor(editorId);
             return editors[editorId];
         }
         return ace.edit(editorId);

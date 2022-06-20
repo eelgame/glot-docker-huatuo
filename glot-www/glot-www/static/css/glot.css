@@ -1,5 +1,5 @@
 .container {
-    width: 1200px;
+    width: 1300px;
 }
 
 html {
@@ -7,5 +7,5 @@ html {
 }
 
 .amis-scope .cxd-EditorControl {
-  max-height: 250rem;
+  max-height: 120rem;
 }
