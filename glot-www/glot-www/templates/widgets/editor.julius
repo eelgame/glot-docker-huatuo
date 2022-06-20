@@ -27,6 +27,7 @@ window.Editor = (function() {
                     "name": "code",
                     "label": "",
                     "value": code || "",
+                    "onChange": function() { amisScoped.dirty = true; },
                     "language": #{toJSON $ languageMonacoMode lang},
                     "editorTheme": "vs-dark",
                   }
@@ -95,18 +96,22 @@ window.Editor = (function() {
     }
 
     function clean() {
-        if (useMonaco()) return;
         var editorIds = getEditorIds();
-        return editorIds.forEach(function(id) {
+        if (useMonaco()) { editorIds.forEach(function(id) { editors[id].dirty = false; }); return;}
+        editorIds.forEach(function(id) {
             var editor = ace.edit(id);
             editor.session.getUndoManager().reset();
         });
     }
 
     function isClean() {
-        if (useMonaco()) return false;
-
         var editorIds = getEditorIds();
+
+        if (useMonaco())         
+            return editorIds.every(function(id) {
+                return !editors[id].dirty;
+            });
+
         return editorIds.every(function(id) {
             var editor = ace.edit(id);
             return editor.session.getUndoManager().isClean();
