@@ -28,7 +28,7 @@ window.Editor = (function() {
               }
             });
 
-            amisScoped.editor = amisScoped.getComponentByName('page.form.code');
+            Object.defineProperty(amisScoped, "editor", { get: function () { return amisScoped.getComponentByName('page.form.code'); } });
             amisScoped.getValue = function () {
                 this.editor.props.value
             }
