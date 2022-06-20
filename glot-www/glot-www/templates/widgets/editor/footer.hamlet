@@ -1,8 +1,8 @@
 $newline never
 
-<div id="more-actions"></div>
 <div id="amis_root" style="overflow: visible;"></div>
 <div class="editor-footer">
+  <div id="more-actions"></div>
   <div class="panel panel-default">
     <div class="panel-heading">
       $if isRunnable
