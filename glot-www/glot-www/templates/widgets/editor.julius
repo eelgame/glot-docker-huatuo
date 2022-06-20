@@ -29,6 +29,8 @@ window.Editor = (function() {
                     "editorTheme": "vs-dark",
                     "editorDidMount": (editor, monaco) => {
                         // monaco.editor.setTheme("vs-dark");
+                        console.log(editor);
+                        console.log("#{languageDefaultContent lang}");
                     }
                   }
                 ]
