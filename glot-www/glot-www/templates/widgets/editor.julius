@@ -3,8 +3,7 @@ window.Editor = (function() {
     const editors = {}
 
     function useMonaco () {
-        return 
-            #{toJSON $ languageMonacoMode lang};
+        return  #{toJSON $ languageMonacoMode lang};
     } 
 
     function initEditor(id) {
@@ -25,7 +24,10 @@ window.Editor = (function() {
                     "type": "editor",
                     "name": "code",
                     "label": "",
-                    "language": #{toJSON $ languageMonacoMode lang}
+                    "language": #{toJSON $ languageMonacoMode lang},
+                    "editorDidMount": (editor, monaco) => {
+                        monaco.editor.setTheme("vs-dark");
+                    }
                   }
                 ]
               }
