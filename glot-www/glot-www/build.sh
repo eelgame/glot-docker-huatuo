@@ -2,10 +2,12 @@
 # This script is meant to be used in combination with build_docker.sh
 set -e
 
-stack_root="/root/.stack"
+stack_root="/build/.stack"
 
-# stack --stack-root $stack_root setup
-# stack --stack-root $stack_root clean
+[ ! -d $stack_root ] && cp -r /root/.stack /build/
+
+stack --stack-root $stack_root setup
+stack --stack-root $stack_root clean
 stack --stack-root $stack_root build
 
 rm -rf /build/release || true
