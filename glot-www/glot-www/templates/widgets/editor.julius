@@ -17,6 +17,7 @@ window.Editor = (function() {
               "body": {
                 "type": "form",
                 "name": "form",
+                "submitText": "",
                 "label": "",
                 "body": [
                   {
