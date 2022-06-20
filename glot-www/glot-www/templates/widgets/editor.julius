@@ -22,7 +22,7 @@ window.Editor = (function() {
                     "type": "editor",
                     "name": "code",
                     "label": "",
-                    "language": "json"
+                    "language": #{toJSON $ languageMonacoMode lang}
                   }
                 ]
               }
