@@ -1,6 +1,41 @@
 window.Editor = (function() {
 
+    const editors = {}
+
+    function useMonaco () {
+        return #{toJSON $ languageMonacoMode lang}
+    } 
+
     function initEditor(id) {
+        if (useMonaco()) {
+            let amis = amisRequire('amis/embed');
+            let amisLib = amisRequire('amis');
+
+            let amisScoped = amis.embed(document.getElementById(id), {
+              "type": "page",
+              name: "page",
+              "body": {
+                "type": "form",
+                name: "form",
+                "body": [
+                  {
+                    "type": "editor",
+                    "name": "code",
+                    "label": "",
+                    "language": "json"
+                  }
+                ]
+              }
+            });
+
+            amisScoped.editor = amisScoped.getComponentByName('page.form.code');
+            amisScoped.getValue = function () {
+                this.editor.props.value
+            }
+            editors[id] = amisScoped;
+            return;
+        }
+
         var theme = Settings.getTheme();
         var keybindings = Settings.getKeybindings();
         var lineCount = Settings.getLineCount() || Settings.calcLineCount();
@@ -16,15 +51,18 @@ window.Editor = (function() {
 
         // Resize to flush stale content
         resizeEditor(editor);
+        editors[id] = editor;
     }
 
     function resizeEditor(editor) {
+        if (useMonaco()) return;
         setTimeout(function() {
             editor.resize();
         }, 1);
     }
 
     function setTheme(theme) {
+        if (useMonaco()) return;
         var editorIds = getEditorIds();
         editorIds.forEach(function(id) {
             var editor = ace.edit(id);
@@ -33,6 +71,7 @@ window.Editor = (function() {
     }
 
     function setLineCount(lineCount) {
+        if (useMonaco()) return;
         var editorIds = getEditorIds();
         editorIds.forEach(function(id) {
             var editor = ace.edit(id);
@@ -44,6 +83,7 @@ window.Editor = (function() {
     }
 
     function clean() {
+        if (useMonaco()) return;
         var editorIds = getEditorIds();
         return editorIds.forEach(function(id) {
             var editor = ace.edit(id);
@@ -52,6 +92,8 @@ window.Editor = (function() {
     }
 
     function isClean() {
+        if (useMonaco()) return false;
+
         var editorIds = getEditorIds();
         return editorIds.every(function(id) {
             var editor = ace.edit(id);
@@ -60,6 +102,7 @@ window.Editor = (function() {
     }
 
     function setKeybindings(keybindings) {
+        if (useMonaco()) return;
         var editorIds = getEditorIds();
         editorIds.forEach(function(id) {
             var editor = ace.edit(id);
@@ -76,8 +119,10 @@ window.Editor = (function() {
     }
 
     function resetEditor(id) {
+        if (useMonaco()) editors[id].editor.props.setValue('');
         var editor = ace.edit(id);
         editor.setValue("");
+        
     }
 
     function setFiles(files) {
@@ -91,6 +136,11 @@ window.Editor = (function() {
     }
 
     function setValue(id, value) {
+
+        if (useMonaco()) {
+            editors[id].editor.props.setValue(value);
+            return;
+        }
         var editor = ace.edit(id);
         editor.setValue(value);
     }
@@ -184,6 +234,7 @@ window.Editor = (function() {
     }
 
     function getEditor(editorId) {
+        if (useMonaco()) return editors[editorId];
         return ace.edit(editorId);
     }
 
