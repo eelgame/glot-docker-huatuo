@@ -33,7 +33,7 @@ window.Editor = (function() {
 
             Object.defineProperty(amisScoped, "editor", { get: function () { return amisScoped.getComponentByName('page.form.code'); } });
             amisScoped.getValue = function () {
-                this.editor.props.value
+                return amisScoped.editor.props.value
             }
             editors[id] = amisScoped;
             return;
