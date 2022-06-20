@@ -403,7 +403,7 @@ languageAceMode Raku = ""
 languageAceMode Ruby = "ruby"
 languageAceMode Rust = ""
 languageAceMode Scala = ""
-languageAceMode Swift = "swift
+languageAceMode Swift = "swift"
 languageAceMode TypeScript = "typescript"
 languageAceMode Plaintext = "plaintext"
 
