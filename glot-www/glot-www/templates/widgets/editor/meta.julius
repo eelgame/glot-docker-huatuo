@@ -86,6 +86,8 @@ if (document.getElementById("more-actions")) {
     let amis = amisRequire('amis/embed');
     let amisLib = amisRequire('amis');
 
+    let amisRootScoped;
+
     let amisJSON = {
         "type": "page",
         "body": {
@@ -131,7 +133,12 @@ if (document.getElementById("more-actions")) {
                 onClick: (e, props) => {
                     const files = Editor.getFiles();
                     const func = Function(files[0].content);
-                    amis.embed('#amis_root', func());
+                    if (amisRootScoped) 
+                    {
+                        amisRootScoped.unmount();
+                        amisRootScoped = null;
+                    }
+                    amisRootScoped = amis.embed('#amis_root', func());
                 }
             },
             {
