@@ -25,8 +25,9 @@ window.Editor = (function() {
                     "name": "code",
                     "label": "",
                     "language": #{toJSON $ languageMonacoMode lang},
+                    "editorTheme": "vs-dark",
                     "editorDidMount": (editor, monaco) => {
-                        monaco.editor.setTheme("vs-dark");
+                        // monaco.editor.setTheme("vs-dark");
                     }
                   }
                 ]
