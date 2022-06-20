@@ -3,7 +3,8 @@ window.Editor = (function() {
     const editors = {}
 
     function useMonaco () {
-        return #{toJSON $ languageMonacoMode lang}
+        return 
+            #{toJSON $ languageMonacoMode lang};
     } 
 
     function initEditor(id) {
