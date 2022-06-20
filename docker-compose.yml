@@ -64,5 +64,5 @@ services:
       RUST_LOG: debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  csharp:
-    image: 'glot/csharp:latest'
+  # csharp:
+  #   image: 'glot/csharp:latest'
