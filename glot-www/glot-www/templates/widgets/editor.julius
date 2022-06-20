@@ -13,10 +13,11 @@ window.Editor = (function() {
 
             let amisScoped = amis.embed(document.getElementById(id), {
               "type": "page",
-              name: "page",
+              "name": "page",
               "body": {
                 "type": "form",
-                name: "form",
+                "name": "form",
+                "label": "",
                 "body": [
                   {
                     "type": "editor",
