@@ -30,7 +30,7 @@ window.Editor = (function() {
                     "editorDidMount": (editor, monaco) => {
                         // monaco.editor.setTheme("vs-dark");
                         console.log(editor);
-                        console.log(#{languageDefaultContent lang});
+                        console.log(#{toJSON $ languageDefaultContent lang});
                     }
                   }
                 ]
