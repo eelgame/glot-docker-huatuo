@@ -19,7 +19,7 @@ window.Editor = (function() {
                 "type": "form",
                 "name": "form",
                 "submitText": "",
-                "label": "",
+                "wrapWithPanel": false,
                 "body": [
                   {
                     "type": "editor",
