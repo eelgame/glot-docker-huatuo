@@ -239,7 +239,12 @@ window.Editor = (function() {
     }
 
     function getEditor(editorId) {
-        if (useMonaco()) return editors[editorId];
+        if (useMonaco()) {
+            if(!editors[editorId]) {
+                initEditor(editorId);
+            }
+            return editors[editorId];
+        }
         return ace.edit(editorId);
     }
 
