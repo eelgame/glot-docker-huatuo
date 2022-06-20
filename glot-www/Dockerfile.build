@@ -4,4 +4,4 @@ FROM registry.cn-chengdu.aliyuncs.com/mgame/ubuntu-glot-haskellstack
 RUN mkdir /build
 VOLUME ["/build"]
 WORKDIR /build
-CMD "/build/build.sh"
+# CMD "/build/build.sh"

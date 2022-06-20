@@ -1,5 +1,8 @@
 version: '3.1'
 services:
+  www-build:
+    build:
+      dockerfile: ./glot-www/Dockerfile.build
   www:
     build: ./glot-www
     environment:
