@@ -8,6 +8,7 @@ window.Editor = (function() {
 
     function initEditor(id) {
         if (useMonaco()) {
+            if (editors[id]) return;
             let amis = amisRequire('amis/embed');
             let amisLib = amisRequire('amis');
 
@@ -241,9 +242,7 @@ window.Editor = (function() {
 
     function getEditor(editorId) {
         if (useMonaco()) {
-            if(!editors[editorId]) {
-                initEditor(editorId);
-            }
+            initEditor(editorId);
             return editors[editorId];
         }
         return ace.edit(editorId);
