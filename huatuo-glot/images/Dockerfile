@@ -8,3 +8,6 @@ RUN mkdir -p /home/glot && chmod -R 777 /home/glot
 RUN rm -rf /home/glot/runner
 RUN cp /code-runner /home/glot/runner
 RUN chmod +x /home/glot/runner
+
+ENTRYPOINT []
+CMD [ "/code-runner", "--path", "/home/glot" ]
