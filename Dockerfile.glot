@@ -1,4 +1,4 @@
-# docker build -f Dockerfile.glot -t glot/huatuo .
+# docker build -f Dockerfile.glot -t registry.cn-chengdu.aliyuncs.com/mgame/glot-huatuo .
 
 FROM ubuntu:20.04
 
