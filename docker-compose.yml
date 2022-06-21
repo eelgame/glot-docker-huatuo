@@ -18,6 +18,7 @@ services:
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN}
       MAILGUN_API_KEY: ${MAILGUN_API_KEY}
       EMAIL_FROM_ADDRESS: "eelgame@qq.com"
+      DISABLE_ADS: true
     # command: stack exec yesod devel
     ports:
       - "3000:3000"
