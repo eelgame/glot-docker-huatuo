@@ -15,6 +15,13 @@ namespace HuaTuo.Runtime
 
     public static class HuaTuoHelper
     {
+        public static string[] aotDlls =
+        {
+            "mscorlib.dll",
+            "System.dll",
+            "System.Core.dll" // 如果使用了Linq，需要这个
+        };
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Startup()
         {
@@ -47,18 +54,18 @@ namespace HuaTuo.Runtime
             // 原始dll。
             // 这里以最常用的mscorlib.dll举例
             //
-            var dllName = "mscorlib.dll";
-            if (BetterStreamingAssets.FileExists(dllName))
-            {
-                var dllBytes = BetterStreamingAssets.ReadAllBytes(dllName);
-
-                fixed (byte* ptr = dllBytes)
+            foreach (var dllName in aotDlls)
+                if (BetterStreamingAssets.FileExists(dllName))
                 {
-                    // 加载assembly对应的dll，会自动为它hook。一旦aot泛型函数的native函数不存在，用解释器版本代码
-                    var err = HuatuoApi.LoadMetadataForAOTAssembly((IntPtr)ptr, dllBytes.Length);
-                    Debug.Log("LoadMetadataForAOTAssembly. ret:" + err);
+                    var dllBytes = BetterStreamingAssets.ReadAllBytes(dllName);
+
+                    fixed (byte* ptr = dllBytes)
+                    {
+                        // 加载assembly对应的dll，会自动为它hook。一旦aot泛型函数的native函数不存在，用解释器版本代码
+                        var err = HuatuoApi.LoadMetadataForAOTAssembly((IntPtr)ptr, dllBytes.Length);
+                        Debug.Log("LoadMetadataForAOTAssembly. ret:" + err);
+                    }
                 }
-            }
         }
     }
 }

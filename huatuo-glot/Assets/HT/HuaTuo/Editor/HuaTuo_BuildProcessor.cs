@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using HuaTuo.Runtime;
 using NiceIO;
 using UnityEditor;
 using UnityEditor.Build;
@@ -19,17 +20,18 @@ namespace HuaTuo.Editor
                 var managedPath = "Temp/StagingArea/Data/Managed/";
                 if (data.target == BuildTarget.Android) managedPath = "Temp/StagingArea/assets/bin/Data/Managed";
 
-                if (data.target == BuildTarget.Android)
-                {
-                    File.Copy(Path.Combine(managedPath, "mscorlib.dll"), "Temp/StagingArea/assets/mscorlib.dll");
-                }
-                else
-                {
-                    var paths = new NPath("Temp/StagingArea").Directories("StreamingAssets", true);
-                    if (paths.Length > 0)
-                        File.Copy(Path.Combine(managedPath, "mscorlib.dll"),
-                            paths[0].Combine("mscorlib.dll").ToString());
-                }
+                foreach (var dllName in HuaTuoHelper.aotDlls)
+                    if (data.target == BuildTarget.Android)
+                    {
+                        File.Copy(Path.Combine(managedPath, dllName), $"Temp/StagingArea/assets/{dllName}");
+                    }
+                    else
+                    {
+                        var paths = new NPath("Temp/StagingArea").Directories("StreamingAssets", true);
+                        if (paths.Length > 0)
+                            File.Copy(Path.Combine(managedPath, dllName),
+                                paths[0].Combine(dllName).ToString());
+                    }
             }
             catch (Exception e)
             {

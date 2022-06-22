@@ -1,3 +1,5 @@
 <linker>
     <assembly fullname="mscorlib" preserve="all" />
+    <assembly fullname="System" preserve="all" />
+    <assembly fullname="System.Core" preserve="all" />
 </linker>
